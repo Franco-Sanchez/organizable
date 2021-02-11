@@ -1,6 +1,6 @@
 export const BASE_URL = 'http://localhost:3000'
 
-export function apiFetch(...args) {
+export async function apiFetch(...args) {
   const response = await fetch(...args);
   if(!response.ok) {
     const error = await response.json();
