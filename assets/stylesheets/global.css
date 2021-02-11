@@ -26,6 +26,13 @@
   --gray-color: #838c90;
   --light-gray-color: #b3bac5;
   --grass-green-color: #519839;
+  --secundary-color: #999b9e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 label {
@@ -62,17 +69,6 @@ button {
   height: 32px;
   background: var(--background-button-color);
   border-radius: 3px;
-}
-
-title {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  color: var(--white-color);
 }
 
 h2 {
