@@ -1,13 +1,13 @@
 import { apiFetch, BASE_URL } from "./api_fetch.js";
 
 export function BoardServices() {
-  if (BoardServices.instance) {
+  if (!BoardServices.instance) {
     BoardServices.instance = this;
   }
   return BoardServices.instance;
 }
 
-BoardServices.prototype.list = function() {
+BoardServices.prototype.boards = function() {
   return apiFetch(`${BASE_URL}/boards`, {
     method: 'GET',
     headers: {
