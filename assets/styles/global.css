@@ -71,6 +71,7 @@ a {
   line-height: 20px;
   text-align: center;
   color: var(--input-border-color);
+  text-decoration: none;
 }
 
 button {
@@ -96,4 +97,16 @@ p {
   font-size: 16px;
   line-height: 20px;
   color: var(--white-color);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.js-content {
+  width: 412px;
+  height: 532px;
 }
