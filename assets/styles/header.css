@@ -1,14 +1,4 @@
-.header {
-  position: fixed;
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--background-header-color);
-}
-
-.header__logo {
+.logo {
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
@@ -18,7 +8,7 @@
   align-items: center;
   color: var(--white-color);
 }
-.header__logo--color2 {
+.logo--color2 {
   color: var(--secundary-color);
   padding-right: 6px;
 }
