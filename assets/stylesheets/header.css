@@ -20,4 +20,5 @@
 }
 .header__logo--color2 {
   color: var(--secundary-color);
+  padding-right: 6px;
 }
