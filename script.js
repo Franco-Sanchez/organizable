@@ -1,6 +1,14 @@
-import { BoardServices } from "./assets/scripts/services/board_services.js.js";
-import { UserServices } from "./assets/scripts/services/user_services.js.js";
-import { STORE } from './assets/scripts/store.js';
+// import { BoardServices } from "./assets/scripts/services/board_services.js.js";
+// import { UserServices } from "./assets/scripts/services/user_services.js.js";
+// import { SignUp } from "./assets/scripts/signup.js";
+// import { STORE } from './assets/scripts/store.js';
+
+// function init() {
+//   const signUp = new SignUp('.js-content');
+//   signUp.render();
+// }
+
+// init()
 
 // async function init() {
 //   const login = new Login('.js-content')
