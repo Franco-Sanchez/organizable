@@ -11,9 +11,9 @@ export function Main(parentSelector) {
     this.toString = function() {
       return `
         <aside>
-          <ul>
+          <ul class="js-views">
             <li>
-              <a class="js-redirect" data-value="my_boards" href="#">My boards</a>
+              <a class="js-redirect selected" data-value="my_boards" href="#">My boards</a>
             </li>
             <li>
               <a class="js-redirect" data-value="closed_boards" href="#">Closed boards</a>
@@ -41,39 +41,44 @@ Main.prototype.render = function() {
 }
 
 Main.prototype.addRedirectListener = function() {
-  const triggers = this.parentElement.querySelectorAll('.js-redirect');
-  const container = this.parentElement.querySelector('.js-container');
-  triggers.forEach(trigger => {
-    trigger.addEventListener('click', async (e) => {
+  const container = this.parentElement.querySelector('.js-views')
+  container.addEventListener('click', (e) => {
+    const triggers = container.querySelectorAll('.js-redirect');
+    triggers.forEach(async (trigger) => {
       e.preventDefault();
-      switch (trigger.dataset.value) {
-        case 'closed_boards':
-          const closedBoards = new ClosedBoards('.js-container');
-          closedBoards.render();
-          break;
-        case 'my_profile':
-          const myProfile = new MyProfile('.js-container');
-          myProfile.render();
-          break;
-        case 'log_out':
-          try {
-            const logOut = new SessionServices();
-            await logOut.logout();
-            sessionStorage.removeItem('token');
-            sessionStorage.removeItem('id');
-            const signUp = new SignUp();
-            signUp.render();
-          }catch(e) {
-            alert(e.message)
-          }
-          break;
-        default:
-          const myBoards = new MyBoards()
-          myBoards.render();
-          break;
+      if(e.target === trigger) {
+        trigger.classList.add('selected')
+        switch (trigger.dataset.value) {
+          case 'closed_boards':
+            const closedBoards = new ClosedBoards('.js-container');
+            closedBoards.render();
+            break;
+          case 'my_profile':
+            const myProfile = new MyProfile('.js-container');
+            myProfile.render();
+            break;
+          case 'log_out':
+            try {
+              const logOut = new SessionServices();
+              await logOut.logout();
+              sessionStorage.removeItem('token');
+              sessionStorage.removeItem('id');
+              const signUp = new SignUp();
+              signUp.render();
+            }catch(e) {
+              alert(e.message)
+            }
+            break;
+          default:
+            const myBoards = new MyBoards()
+            myBoards.render();
+            break;
+        }
+      } else {
+        trigger.classList.remove('selected');
       }
     })
-  });
+  })
 }
 
 Main.prototype.renderMyBoards = function() {

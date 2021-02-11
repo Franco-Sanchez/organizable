@@ -110,3 +110,7 @@ main {
   width: 412px;
   height: 532px;
 }
+
+.selected {
+  color: red;
+}
