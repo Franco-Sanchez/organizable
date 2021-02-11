@@ -1,4 +1,5 @@
 export const STORE = {
   user: {},
-  boards: []
+  boards: [],
+  currentBoard: null
 }

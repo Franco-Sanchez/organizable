@@ -1,10 +1,9 @@
-export function Profile(parentSelector) {
-  if (!Profile.instance) {
-    this.parentSelector = parentSelector;
-    this.parentElement = document.querySelector(parentSelector);
-    this.toString = function () {
-      return `
-      <section>
+export function MyProfile(parentSelector) {
+  if(!MyProfile.instance) {
+    this.parentSelector = parentSelector
+    this.parentElement = document.querySelector(parentSelector)
+    this.toString = function() {
+      return `<section>
       <form class="js-form-profile">
         <div>
           <label for="username">Username</label><br />
@@ -28,8 +27,12 @@ export function Profile(parentSelector) {
         </div>
       </form>
     </section>`
-    };
-    Profile.instance = this;
+    }
+    MyProfile.instance = this;
   }
-  return Profile.instance;
+  return MyProfile.instance
+}
+
+MyProfile.prototype.render = function() {
+  this.parentElement.innerHTML = this;
 }

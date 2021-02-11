@@ -1,8 +1,11 @@
 import { SessionServices } from './services/session_services.js';
-import { SignUp } from './signup.js';
+// import { SignUp } from './signup.js';
+import { MyBoards } from "./my_boards.js";
+import { ClosedBoards } from './closed_boards.js';
+import { MyProfile } from "./profile.js";
 
-export function Layout(parentSelector) {
-  if(!Layout.instance) {
+export function Main(parentSelector) {
+  if(!Main.instance) {
     this.parentSelector = parentSelector;
     this.parentElement = document.querySelector(parentSelector);
     this.toString = function() {
@@ -26,31 +29,31 @@ export function Layout(parentSelector) {
         <section class="js-container"></section>
       `
     }
-    Layout.instance = this;
+    Main.instance = this;
   }
-  return Layout.instance;
+  return Main.instance;
 }
 
-Layout.prototype.render = function() {
+Main.prototype.render = function() {
   this.parentElement.innerHTML = this;
+  this.renderMyBoards();
   this.addRedirectListener();
 }
 
-Layout.prototype.addRedirectListener = function() {
+Main.prototype.addRedirectListener = function() {
   const triggers = this.parentElement.querySelectorAll('.js-redirect');
   const container = this.parentElement.querySelector('.js-container');
   triggers.forEach(trigger => {
     trigger.addEventListener('click', async (e) => {
       e.preventDefault();
-      let html = ''
       switch (trigger.dataset.value) {
         case 'closed_boards':
-          const closedBoards = new ClosedBoards();
-          html = closedBoards.render();
+          const closedBoards = new ClosedBoards('.js-container');
+          closedBoards.render();
           break;
         case 'my_profile':
-          const myProfile = new MyProfile();
-          html = myProfile.render();
+          const myProfile = new MyProfile('.js-container');
+          myProfile.render();
           break;
         case 'log_out':
           try {
@@ -66,10 +69,14 @@ Layout.prototype.addRedirectListener = function() {
           break;
         default:
           const myBoards = new MyBoards()
-          html = myBoards.render();
+          myBoards.render();
           break;
       }
-      container.innerHTML = html;
     })
   });
+}
+
+Main.prototype.renderMyBoards = function() {
+  const myBoards = new MyBoards('.js-container');
+  myBoards.render();
 }
