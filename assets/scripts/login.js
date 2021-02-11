@@ -1,5 +1,7 @@
+import { Layout } from "./layout.js";
 import { SessionServices } from "./services/session_services.js";
 import { SignUp } from "./signup.js";
+import { STORE } from './store.js';
 
 export function Login(parentSelector) {
   if (!Login.instance) {
@@ -7,6 +9,7 @@ export function Login(parentSelector) {
     this.parentElement = document.querySelector(parentSelector);
     this.toString = function () {
       return `
+      <section>
         <form class="js-form-login">
           <div>
             <label for="username">Username</label><br />
@@ -21,6 +24,7 @@ export function Login(parentSelector) {
           </div>
           <a class="js-signup-view" href="#">Create an Account</a>
         </form>
+      </section>
       `;
     };
     Login.instance = this;
@@ -44,7 +48,10 @@ Login.prototype.addListenerFormSubmit = function () {
       const data = await sessionServices.login(username.value, password.value);
       if (data.token) {
         sessionStorage.setItem("token", data.token);
-        console.log(data);
+        sessionStorage.setItem('id', data.id)
+        STORE.user = data;
+        const layout = new Layout();
+        layout.render();
       }
     } catch (e) {
       alert(e.message);

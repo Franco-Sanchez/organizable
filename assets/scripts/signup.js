@@ -1,3 +1,4 @@
+import { Layout } from "./layout.js";
 import { Login } from "./login.js";
 import { UserServices } from "./services/user_services.js";
 
@@ -7,6 +8,7 @@ export function SignUp(parentSelector) {
     this.parentElement = document.querySelector(parentSelector);
     this.toString = function () {
       return `
+      <section>
         <form class="js-form-signup">
           <div>
             <label for="username">Username</label><br />
@@ -32,7 +34,8 @@ export function SignUp(parentSelector) {
             <button>Create!</button>
           </div><br>
           <a class="js-login-view" href="#">or login with existing user</a>
-        </form>`;
+        </form>
+      </section>`
     };
     SignUp.instance = this;
   }
@@ -61,7 +64,10 @@ SignUp.prototype.addListenerFormSubmit = function () {
       );
       if (data.token) {
         sessionStorage.setItem('token', data.token);
-        console.log(data);
+        sessionStorage.setItem('id', data.id);
+        STORE.user = data;
+        const layout = new Layout();
+        layout.render();
       }
     } catch (e) {
       alert(e);
