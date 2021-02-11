@@ -12,42 +12,26 @@ export function SignUp(parentSelector) {
       <form class="js-form-profile">
         <div>
           <label for="username">Username</label><br />
-          <p>prueba</p>
+          <input type="text" name="username" id="username">
         </div>
         <div>
           <label for="email">Email</label><br />
-          <p>prueba</p>
+          <input type="email" name="email" id="email">
         </div>
         <div>
           <label for="first_name">First Name</label><br />
-          <p>prueba</p>
+          <input type="text" name="first_name" id="first_name">
         </div>
         <div>
           <label for="last_name">Last Name</label><br />
-          <p>prueba</p>
+          <input type="text" name="last_name" id="last_name">
         </div>
         <div class = "profile-button"> <br> 
           <button class="profile--button__edit">Edit</button>
           <button class="profile--button__delete">Delete</button>
         </div>
       </form>
-    </section>
-    <aside>
-          <ul>
-            <li>
-              <a class="js-redirect" data-value="my_boards" href="#">My boards</a>
-            </li>
-            <li>
-              <a class="js-redirect" data-value="closed_boards" href="#">Closed boards</a>
-            </li>
-            <li>
-              <a class="js-redirect" data-value="my_profile" href="#">My profile</a>
-            </li>
-            <li>
-              <a class="js-redirect" data-value="log_out" href="#">Log out</a>
-            </li>
-          </ul>
-    </aside>`
+    </section>`
     };
     SignUp.instance = this;
   }
