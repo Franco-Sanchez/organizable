@@ -44,6 +44,15 @@ label {
   color: var(--label-color);
 }
 
+header {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-header-color);
+}
+
 input {
   width: 224px;
   height: 32px;
@@ -88,4 +97,16 @@ p {
   font-size: 16px;
   line-height: 20px;
   color: var(--white-color);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.js-content {
+  width: 412px;
+  height: 532px;
 }

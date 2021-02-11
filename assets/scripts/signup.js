@@ -30,9 +30,9 @@ export function SignUp(parentSelector) {
             <label for="last_name">Last Name</label><br />
             <input type="text" name="last_name" id="last_name">
           </div>
-          <div>
+          <div> <br> <br>
             <button>Create!</button>
-          </div>
+          </div><br>
           <a class="js-login-view" href="#">or login with existing user</a>
         </form>
       </section>`
