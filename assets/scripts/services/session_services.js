@@ -19,7 +19,7 @@ SessionServices.prototype.login = function(username, password) {
 
 SessionServices.prototype.logout = function() {
   return apiFetch(`${BASE_URL}/logout`, {
-    method: 'DELETE',
+    method: 'POST',
     headers: {
       Authorization: `Token token=${sessionStorage.getItem('token')}`
     }
