@@ -1,0 +1,28 @@
+:root {
+  --label-color: #172B4D;
+  --input-border-color: #0079BF;
+  --border-icon-star-color: #C3BE0E;
+  --background-button-color: #5AAC44;
+  --background-signup-color: #F4F5F7;
+  --background-header-color: #58595A;
+  --background-card-icon-create-color: #F0F2F5;
+  --background-create-new-label: rgba(9, 30, 66, 0.04);
+  --background-new-board-color: rgba(63, 63, 63, 0.8);
+  --background-detele-card: rgba(235, 90, 70, 0.5);
+  --background-button-urgent: #EB5A46;
+  --background-building: #EBECF0;
+  --white-color: #FFFFFF;
+  --green-color: #4BBF6B;
+  --carmine-color: #B04632;
+  --dark-blue-color: #344563;
+  --light-blue-color: #0AAECB;
+  --orange-color: #D29034;
+  --orange-edit-color: #FF9F1A;
+  --purple-color: #89609E;
+  --light-purple-edit-color: #C377E0;
+  --pink-color: #CD5A90;
+  --yellow-color: #F2D600;
+  --gray-color: #838C90;
+  --light-gray-color: #B3BAC5;
+  --grass-green-color: #519839;
+}
