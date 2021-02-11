@@ -1,4 +1,4 @@
-import { Layout } from "./layout.js";
+import { Main } from "./main.js";
 import { SessionServices } from "./services/session_services.js";
 import { SignUp } from "./signup.js";
 import { STORE } from './store.js';
@@ -50,8 +50,8 @@ Login.prototype.addListenerFormSubmit = function () {
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem('id', data.id)
         STORE.user = data;
-        const layout = new Layout();
-        layout.render();
+        const main = new Main();
+        main.render();
       }
     } catch (e) {
       alert(e.message);
