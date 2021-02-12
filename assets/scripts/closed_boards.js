@@ -1,5 +1,4 @@
-import { Main } from "./main.js";
-import { BoardServices } from "./services/board_services.js";
+import { ClosedBoard } from "./closed_board.js";
 import { STORE } from "./store.js";
 
 export function ClosedBoards(parentSelector) {
@@ -22,66 +21,18 @@ export function ClosedBoards(parentSelector) {
 
 ClosedBoards.prototype.render = function() {
   this.parentElement.innerHTML = this;
-  this.renderClosedBoards();
-  this.deleteBoard();
-  this.changeStateClosed();
-}
-
-ClosedBoards.prototype.renderClosedBoards = function() {
-  const container = this.parentElement.querySelector('.js-closed-boards');
-  const closedBoards = STORE.boards.filter(board => board.closed);
-  container.innerHTML = closedBoards.map(closedBoard => this.renderClosedBoard(closedBoard)).join('');
-}
-
-ClosedBoards.prototype.changeStateClosed = function() {
-  const closedIcons = this.parentElement.querySelectorAll('.js-return');
-  closedIcons.forEach(closedIcon => {
-    closedIcon.addEventListener('click', async (e) => {
-      try {
-        const boardId = parseInt(closedIcon.closest('LI').dataset.id);
-        const boardSelected = STORE.boards.find(board => board.id === boardId);
-        boardSelected.closed = false;
-        const boardServices = new BoardServices();
-        const data = await boardServices.update(boardId, boardSelected.starred, boardSelected.closed)
-        STORE.boards = STORE.boards.map(board => {
-          if(board.id === data.id) {
-            return data;
-          }
-          return board;
-        })
-        this.render();
-      } catch (e) {
-        alert(e.message)
-      }
-    })
+  const closedBoards = this.generateClosedBoards('.js-closed-boards');
+  closedBoards.forEach(closedBoard => {
+    closedBoard.addEventListeners();
   })
 }
 
-ClosedBoards.prototype.deleteBoard = function() {
-  const trashes = this.parentElement.querySelectorAll('.js-trash');
-  trashes.forEach(trash => {
-    trash.addEventListener('click', async (e) => {
-      try {
-        const boardId = parseInt(trash.closest('LI').dataset.id);
-        const boardServices = new BoardServices();
-        await boardServices.delete(boardId);
-        STORE.boards = STORE.boards.filter(board => board.id !== boardId);
-        this.render();
-      } catch (e) {
-        alert(e)
-      }
-    })
-  });
-}
-
-ClosedBoards.prototype.renderClosedBoard = function(closedBoard) {
-  return `
-    <li data-id="${closedBoard.id}" style="background-color:${closedBoard.color}">
-      <h3>${closedBoard.name}</h3>
-      <div>
-        <img class="js-trash" src="./assets/images/trash.svg" alt="trash">
-        <img class="js-return" src="./assets/images/return.svg" alt="return-icon">
-      </div>
-    </li>
-  `
+ClosedBoards.prototype.generateClosedBoards = function(parentSelector) {
+  const container = this.parentElement.querySelector(parentSelector);
+  const filterClosedBoards = STORE.boards.filter(board => board.closed);
+  const closedBoards = filterClosedBoards.map(closedBoard => {
+    return new ClosedBoard(parentSelector, closedBoard);
+  })
+  container.innerHTML = closedBoards.join('');
+  return closedBoards;
 }
