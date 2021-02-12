@@ -27,6 +27,9 @@ export function MyBoards(parentSelector) {
 }
 
 MyBoards.prototype.render = function() {
+  // Esto un error por el singleton, pq al hacer logout elimina 
+  // el parentSelector de la primera instancia
+  this.parentElement = document.querySelector(this.parentSelector);
   this.parentElement.innerHTML = this;
   const starredBoards = this.generateStarredBoards('.js-starred-boards');
   starredBoards.forEach((starredBoard) => {
@@ -36,6 +39,7 @@ MyBoards.prototype.render = function() {
   singleBoards.forEach((singleBoard) => {
     singleBoard.addEventListeners();
   })
+  this.prueba();
 }
 
 MyBoards.prototype.generateStarredBoards = function(parentSelector) {

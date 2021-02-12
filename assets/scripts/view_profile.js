@@ -39,6 +39,7 @@ export function ViewProfile(parentSelector) {
 }
 
 ViewProfile.prototype.render = function() {
+  this.parentElement = document.querySelector(this.parentSelector);
   this.parentElement.innerHTML = this;
   this.activeEdit();
   this.deleteUser();

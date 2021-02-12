@@ -1,8 +1,8 @@
 import { SessionServices } from './services/session_services.js';
 import { MyBoards } from "./my_boards.js";
 import { ClosedBoards } from './closed_boards.js';
+import { Login } from './login.js';
 import { ViewProfile } from "./view_profile.js";
-import { SignUp } from './signup.js';
 
 export function Main(parentSelector) {
   if(!Main.instance) {
@@ -64,8 +64,8 @@ Main.prototype.addRedirectListener = function() {
               await logOut.logout();
               sessionStorage.removeItem('token');
               sessionStorage.removeItem('id');
-              const signUp = new SignUp();
-              signUp.render();
+              const login = new Login();
+              login.render();
             }catch(e) {
               alert(e.message)
             }
