@@ -1,8 +1,8 @@
 import { SessionServices } from './services/session_services.js';
-// import { SignUp } from './signup.js';
 import { MyBoards } from "./my_boards.js";
 import { ClosedBoards } from './closed_boards.js';
 import { MyProfile } from "./profile.js";
+import { SignUp } from './signup.js';
 
 export function Main(parentSelector) {
   if(!Main.instance) {
@@ -36,7 +36,9 @@ export function Main(parentSelector) {
 
 Main.prototype.render = function() {
   this.parentElement.innerHTML = this;
-  this.renderMyBoards();
+  const myBoards = new MyBoards('.js-container');
+  myBoards.render();
+  // this.renderMyBoards();
   this.addRedirectListener();
 }
 
@@ -81,7 +83,7 @@ Main.prototype.addRedirectListener = function() {
   })
 }
 
-Main.prototype.renderMyBoards = function() {
-  const myBoards = new MyBoards('.js-container');
-  myBoards.render();
-}
+// Main.prototype.renderMyBoards = function() {
+//   const myBoards = new MyBoards('.js-container');
+//   myBoards.render();
+// }

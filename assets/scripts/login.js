@@ -53,7 +53,7 @@ Login.prototype.addListenerFormSubmit = function () {
         STORE.user = data;
         const boardServices = new BoardServices();
         const boards = await boardServices.boards();
-        STORE.boards = boards;
+        STORE.boards = [...boards];
         const main = new Main();
         main.render();
       }

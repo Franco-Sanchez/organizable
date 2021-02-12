@@ -1,5 +1,5 @@
-import { Main } from "./main.js";
-import { BoardServices } from "./services/board_services.js";
+import { SingleBoard } from "./single_board.js";
+import { StarredBoard } from "./starred_board.js";
 import { STORE } from "./store.js";
 
 export function MyBoards(parentSelector) {
@@ -17,7 +17,7 @@ export function MyBoards(parentSelector) {
         <img src="./assets/images/brackets.svg" alt="brackets">
         <h2>Your Boards</h2>
       </div>
-      <ul class="js-boards"></ul>
+      <ul class="js-single-boards"></ul>
       <a href="#">Create a new board</a>
       `
     }
@@ -28,91 +28,32 @@ export function MyBoards(parentSelector) {
 
 MyBoards.prototype.render = function() {
   this.parentElement.innerHTML = this;
-  this.renderStarredBoards();
-  this.renderBoards();
-  this.changeStateStarred();
-  this.changeStateClosed();
-}
-
-MyBoards.prototype.renderStarredBoards = function() {
-  const container = this.parentElement.querySelector('.js-starred-boards');
-  const starredBoards = STORE.boards.filter(board => board.starred && !board.closed);
-  container.innerHTML = starredBoards.map(starredBoard => this.renderStarred(starredBoard)).join('');
-}
-
-MyBoards.prototype.renderBoards = function() {
-  const container = this.parentElement.querySelector('.js-boards')
-  const boards = STORE.boards.filter(board => !board.starred && !board.closed);
-  container.innerHTML = boards.map(board => this.renderBoard(board)).join('');
-}
-
-MyBoards.prototype.changeStateStarred = function() {
-  const stars = this.parentElement.querySelectorAll('.js-toggle-star')
-  stars.forEach(star => {
-    star.addEventListener('click', async (e) => {
-      try {
-        const boardId = parseInt(star.closest('LI').dataset.id)
-        const boardSelected = STORE.boards.find(board => board.id === boardId);
-        boardSelected.starred = !boardSelected.starred
-        const boardServices = new BoardServices();
-        const data = await boardServices.update(boardSelected.id, boardSelected.starred, boardSelected.closed);
-        STORE.boards = STORE.boards.map(board => {
-          if(board.id === data.id) {
-            return data;
-          }
-          return board;
-        })
-        this.render();
-      } catch (e) {
-        alert(e)
-      }
-    })
-  });
-}
-
-MyBoards.prototype.changeStateClosed = function() {
-  const closedIcons = this.parentElement.querySelectorAll('.js-closed-icon');
-  closedIcons.forEach(closedIcon => {
-    closedIcon.addEventListener('click', async (e) => {
-      try {
-        const boardId = parseInt(closedIcon.closest('LI').dataset.id);
-        const boardSelected = STORE.boards.find(board => board.id === boardId);
-        boardSelected.closed = true;
-        const boardServices = new BoardServices();
-        const data = await boardServices.update(boardSelected.id, boardSelected.starred, boardSelected.closed);
-        STORE.boards = STORE.boards.map(board => {
-          if(board.id === data.id) {
-            return data;
-          }
-          return board;
-        })
-        this.render();
-      }catch(e) {
-        alert(e.message)
-      }
-    })
+  const starredBoards = this.generateStarredBoards('.js-starred-boards');
+  starredBoards.forEach((starredBoard) => {
+    starredBoard.addEventListeners();
+  })
+  const singleBoards = this.generateSingleBoards('.js-single-boards');
+  singleBoards.forEach((singleBoard) => {
+    singleBoard.addEventListeners();
   })
 }
 
-MyBoards.prototype.renderStarred = function(starredBoard) {
-  return `
-    <li data-id="${starredBoard.id}" style="background-color:${starredBoard.color}">
-      <h3>${starredBoard.name}</h3>
-      <div>
-        <img class="js-toggle-star" src="./assets/images/starred.svg" alt="starred">
-      </div>
-    </li>
-  `
+MyBoards.prototype.generateStarredBoards = function(parentSelector) {
+  const container = this.parentElement.querySelector(parentSelector);
+  const filterStarredBoards = STORE.boards.filter(board => board.starred && !board.closed);
+  const starredBoards = filterStarredBoards.map(starredBoard => {
+    return new StarredBoard(parentSelector, starredBoard);
+  })
+  container.innerHTML = starredBoards.join('');
+  return starredBoards;
 }
 
-MyBoards.prototype.renderBoard = function(board) {
-  return `
-  <li data-id="${board.id}" style="background-color:${board.color}">
-    <h3>${board.name}</h3>
-    <div>
-      <img class="js-closed-icon" src="./assets/images/closed.svg" alt="closed">
-      <img class="js-toggle-star" src="./assets/images/board_normal.svg" alt="board-normal">
-    </div>
-  </li>
-  `
+MyBoards.prototype.generateSingleBoards = function(parentSelector) {
+  const container = this.parentElement.querySelector(parentSelector);
+  const filterSingleBoards = STORE.boards.filter(board => !board.starred && !board.closed);
+  const singleBoards = filterSingleBoards.map(singleBoard => {
+    return new SingleBoard(parentSelector, singleBoard);
+  })
+  container.innerHTML = singleBoards.join('');
+  return singleBoards;
 }

@@ -121,5 +121,6 @@ main {
 }
 
 .selected {
-  color: red;
+  background-color: rgb(161, 177, 161);
+  color: white;
 }
