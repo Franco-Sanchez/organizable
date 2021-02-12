@@ -1,4 +1,3 @@
-import { Prueba } from "./prueba.js";
 import { SingleBoard } from "./single_board.js";
 import { StarredBoard } from "./starred_board.js";
 import { STORE } from "./store.js";
@@ -19,7 +18,7 @@ export function MyBoards(parentSelector) {
         <h2>Your Boards</h2>
       </div>
       <ul class="js-single-boards"></ul>
-      <a class="js-prueba" href="#">Create a new board</a>
+      <a href="#">Create a new board</a>
       `
     }
     MyBoards.instance = this;
@@ -61,13 +60,4 @@ MyBoards.prototype.generateSingleBoards = function(parentSelector) {
   })
   container.innerHTML = singleBoards.join('');
   return singleBoards;
-}
-
-MyBoards.prototype.prueba = function() {
-  const button = this.parentElement.querySelector('.js-prueba');
-  button.addEventListener('click', e => {
-    e.preventDefault();
-    const prueba = new Prueba('.js-content');
-    prueba.render();
-  })
 }
