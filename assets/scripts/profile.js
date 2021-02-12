@@ -1,3 +1,5 @@
+import { STORE } from "./store.js";
+
 export function MyProfile(parentSelector) {
   if(!MyProfile.instance) {
     this.parentSelector = parentSelector
@@ -7,19 +9,19 @@ export function MyProfile(parentSelector) {
       <form class="js-form-profile">
         <div>
           <label for="username">Username</label><br />
-          <p>${user.username}</p>
+          <p>${STORE.user.username}</p>
         </div>
         <div>
           <label for="email">Email</label><br />
-          <p>${user.email}</p>
+          <p>${STORE.user.email}</p>
         </div>
         <div>
           <label for="first_name">First Name</label><br />
-          <p>${user.first_name}</p>
+          <p>${STORE.user.firstName}</p>
         </div>
         <div>
           <label for="last_name">Last Name</label><br />
-          <p>${user.last_name}</p>
+          <p>${STORE.user.lastName}</p>
         </div>
         <div class = "profile-button"> <br> 
           <button class="profile--button__edit">Edit</button>

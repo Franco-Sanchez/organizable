@@ -7,6 +7,7 @@
   display: flex;
   align-items: center;
   color: var(--white-color);
+  cursor: pointer;
 }
 .logo--color2 {
   color: var(--secundary-color);

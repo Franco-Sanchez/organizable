@@ -1,4 +1,5 @@
 import { Main } from "./main.js";
+import { BoardServices } from "./services/board_services.js";
 import { SessionServices } from "./services/session_services.js";
 import { SignUp } from "./signup.js";
 import { STORE } from './store.js';
@@ -50,6 +51,9 @@ Login.prototype.addListenerFormSubmit = function () {
         sessionStorage.setItem("token", data.token);
         sessionStorage.setItem('id', data.id)
         STORE.user = data;
+        const boardServices = new BoardServices();
+        const boards = await boardServices.boards();
+        STORE.boards = boards;
         const main = new Main();
         main.render();
       }
