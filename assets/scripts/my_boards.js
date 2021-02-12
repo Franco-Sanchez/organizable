@@ -62,8 +62,7 @@ MyBoards.prototype.changeStateStarred = function() {
           }
           return board;
         })
-        const main = new Main();
-        main.render();
+        this.render();
       } catch (e) {
         alert(e)
       }
@@ -87,8 +86,7 @@ MyBoards.prototype.changeStateClosed = function() {
           }
           return board;
         })
-        const main = new Main();
-        main.render();
+        this.render();
       }catch(e) {
         alert(e.message)
       }

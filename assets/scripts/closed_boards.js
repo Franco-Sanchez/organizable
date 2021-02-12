@@ -49,8 +49,7 @@ ClosedBoards.prototype.changeStateClosed = function() {
           }
           return board;
         })
-        const main = new Main();
-        main.render();
+        this.render();
       } catch (e) {
         alert(e.message)
       }
@@ -67,8 +66,7 @@ ClosedBoards.prototype.deleteBoard = function() {
         const boardServices = new BoardServices();
         await boardServices.delete(boardId);
         STORE.boards = STORE.boards.filter(board => board.id !== boardId);
-        const main = new Main();
-        main.render();
+        this.render();
       } catch (e) {
         alert(e)
       }
