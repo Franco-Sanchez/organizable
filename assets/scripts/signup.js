@@ -1,6 +1,7 @@
 import { Main } from "./main.js";
 import { Login } from "./login.js";
 import { UserServices } from "./services/user_services.js";
+import { STORE } from "./store.js";
 
 export function SignUp(parentSelector) {
   if (!SignUp.instance) {
@@ -9,10 +10,14 @@ export function SignUp(parentSelector) {
     this.toString = function () {
       return `
       <section>
-      <form class="js-form-profile">
+      <form class="js-form-signup">
         <div>
           <label for="username">Username</label><br />
           <input type="text" name="username" id="username">
+        </div>
+        <div>
+          <label for="password">Password</label><br />
+          <input type="password" name="password" id="password">
         </div>
         <div>
           <label for="email">Email</label><br />
@@ -26,10 +31,10 @@ export function SignUp(parentSelector) {
           <label for="last_name">Last Name</label><br />
           <input type="text" name="last_name" id="last_name">
         </div>
-        <div class = "profile-button"> <br> 
-          <button class="profile--button__edit">Edit</button>
-          <button class="profile--button__delete">Delete</button>
+        <div> 
+          <button type="submit">Create!</button>
         </div>
+        <a class="js-login-view" href="#">or login with existing user</a>
       </form>
     </section>`
     };
