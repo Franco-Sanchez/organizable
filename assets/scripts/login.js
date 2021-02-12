@@ -58,6 +58,7 @@ Login.prototype.addListenerFormSubmit = function () {
         main.render();
       }
     } catch (e) {
+      console.log(e)
       alert(e.message);
     }
   });

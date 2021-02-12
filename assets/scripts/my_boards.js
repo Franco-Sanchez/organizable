@@ -1,3 +1,4 @@
+import { Prueba } from "./prueba.js";
 import { SingleBoard } from "./single_board.js";
 import { StarredBoard } from "./starred_board.js";
 import { STORE } from "./store.js";
@@ -18,7 +19,7 @@ export function MyBoards(parentSelector) {
         <h2>Your Boards</h2>
       </div>
       <ul class="js-single-boards"></ul>
-      <a href="#">Create a new board</a>
+      <a class="js-prueba" href="#">Create a new board</a>
       `
     }
     MyBoards.instance = this;
@@ -27,6 +28,9 @@ export function MyBoards(parentSelector) {
 }
 
 MyBoards.prototype.render = function() {
+  // Esto un error por el singleton, pq al hacer logout elimina 
+  // el parentSelector de la primera instancia
+  this.parentElement = document.querySelector(this.parentSelector);
   this.parentElement.innerHTML = this;
   const starredBoards = this.generateStarredBoards('.js-starred-boards');
   starredBoards.forEach((starredBoard) => {
@@ -36,6 +40,7 @@ MyBoards.prototype.render = function() {
   singleBoards.forEach((singleBoard) => {
     singleBoard.addEventListeners();
   })
+  this.prueba();
 }
 
 MyBoards.prototype.generateStarredBoards = function(parentSelector) {
@@ -56,4 +61,13 @@ MyBoards.prototype.generateSingleBoards = function(parentSelector) {
   })
   container.innerHTML = singleBoards.join('');
   return singleBoards;
+}
+
+MyBoards.prototype.prueba = function() {
+  const button = this.parentElement.querySelector('.js-prueba');
+  button.addEventListener('click', e => {
+    e.preventDefault();
+    const prueba = new Prueba('.js-content');
+    prueba.render();
+  })
 }

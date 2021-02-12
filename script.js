@@ -1,11 +1,22 @@
 import { BoardServices } from "./assets/scripts/services/board_services.js";
 import { UserServices } from "./assets/scripts/services/user_services.js";
-import { SignUp } from "./assets/scripts/signup.js";
+import { Login } from "./assets/scripts/login.js";
 import { STORE } from './assets/scripts/store.js';
 import { Main } from "./assets/scripts/main.js";
 
+function returnHome() {
+  if(sessionStorage.getItem('token')) {
+    const header = document.querySelector('.js-logo');
+    header.addEventListener('click', () => {
+      console.log('Header')
+      const main = new Main();
+      main.render();
+    })
+  }
+}
+
 async function init() {
-  const signUp = new SignUp('.js-content');
+  const login = new Login('.js-content');
   const main = new Main('.js-content');
   if (sessionStorage.getItem('token')) {
       try {
@@ -17,12 +28,13 @@ async function init() {
       } catch (e) {
         if (e.message === 'Access denied') {
           sessionStorage.removeItem('token');
-          signUp.render();
+          login.render();
         }
       }
   } else {
-    signUp.render();
+    login.render();
   }
+  returnHome();
 }
 
 init();

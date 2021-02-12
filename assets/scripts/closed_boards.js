@@ -20,6 +20,7 @@ export function ClosedBoards(parentSelector) {
 }
 
 ClosedBoards.prototype.render = function() {
+  this.parentElement = document.querySelector(this.parentSelector);
   this.parentElement.innerHTML = this;
   const closedBoards = this.generateClosedBoards('.js-closed-boards');
   closedBoards.forEach(closedBoard => {
