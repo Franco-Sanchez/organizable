@@ -18,7 +18,6 @@ export function MyBoards(parentSelector) {
         <h2>Your Boards</h2>
       </div>
       <ul class="js-single-boards boards-box"></ul>
-      <a href="#">Create a new board</a>
       `
     }
     MyBoards.instance = this;
@@ -58,5 +57,6 @@ MyBoards.prototype.generateSingleBoards = function(parentSelector) {
     return new SingleBoard(parentSelector, singleBoard);
   })
   container.innerHTML = singleBoards.join('');
+  container.innerHTML += `<a class="boards-create" href="#">Create a new board</a>`
   return singleBoards;
 }

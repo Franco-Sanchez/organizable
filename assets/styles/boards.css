@@ -9,7 +9,6 @@
 .boards-box {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(auto, 169px));
-  grid-template-rows: 96px;
   gap: 16px;
   margin-bottom: 32px;
 }
@@ -36,4 +35,14 @@
   font-family: Roboto;
   font-size: 16px;
   line-height: 20px;
+}
+
+.boards-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  color: #172B4D;
+  background: #F0F2F5;
+  border-radius: 3px;
 }
