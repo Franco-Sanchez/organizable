@@ -1,0 +1,105 @@
+.create-board {
+  display: none;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(63, 63, 63, 0.8);
+  padding-top: 64px;
+}
+
+.create-board form {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-template-rows: max-content;
+  gap: 5px 12px;
+}
+
+.create-board img {
+  cursor: pointer;
+}
+
+.create-board__box {
+  background-color: blue;
+  border-radius: 3px;
+  padding: 6px 8px 0 8px;
+}
+
+.create-board__button {
+  width: 58%;
+  color: #172B4D;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #F4F5F7;
+  outline: none;
+}
+
+.create-board__input {
+  width: 154px;
+  height: 20px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
+  padding-left: 4px;
+  margin-right: 3px;
+  font-family: Roboto;
+  font-size: 16px;
+}
+
+.create-board__input::placeholder {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+}
+
+.create-board__color {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+}
+.create-board__box-colors {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 5px;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.red {
+  background-color: red;
+}
+
+.pink {
+  background-color: pink;
+}
+
+.lime {
+  background-color: lime;
+}
+
+.skyblue {
+  background-color: skyblue;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.green {
+  background-color: green;
+}
+
+.grey {
+  background-color: grey;
+}
+
+.purple {
+  background-color: purple;
+}

@@ -1,3 +1,4 @@
+import { CreateBoard } from "./form_create_board.js";
 import { SingleBoard } from "./single_board.js";
 import { StarredBoard } from "./starred_board.js";
 import { STORE } from "./store.js";
@@ -38,6 +39,7 @@ MyBoards.prototype.render = function() {
   singleBoards.forEach((singleBoard) => {
     singleBoard.addEventListeners();
   })
+  this.viewFormCreate();
 }
 
 MyBoards.prototype.generateStarredBoards = function(parentSelector) {
@@ -53,10 +55,21 @@ MyBoards.prototype.generateStarredBoards = function(parentSelector) {
 MyBoards.prototype.generateSingleBoards = function(parentSelector) {
   const container = this.parentElement.querySelector(parentSelector);
   const filterSingleBoards = STORE.boards.filter(board => !board.starred && !board.closed);
-  const singleBoards = filterSingleBoards.map(singleBoard => {
+  const singleBoards = filterSingleBoards.sort((a ,b) => a.createdAt > b.createdAt ? 1 : -1).map(singleBoard => {
     return new SingleBoard(parentSelector, singleBoard);
   })
   container.innerHTML = singleBoards.join('');
-  container.innerHTML += `<a class="boards-create" href="#">Create a new board</a>`
+  container.innerHTML += `<a class="js-create-board boards-create" href="#">Create a new board</a>`
   return singleBoards;
+}
+
+MyBoards.prototype.viewFormCreate = function() {
+  const viewCreate = this.parentElement.querySelector('.js-create-board');
+  const section = document.querySelector('.js-section-board')
+  viewCreate.addEventListener('click', (e) => {
+    e.preventDefault();
+    section.style.display = 'flex'
+    const createBoard = new CreateBoard('.js-section-board');
+    createBoard.render();
+  })
 }

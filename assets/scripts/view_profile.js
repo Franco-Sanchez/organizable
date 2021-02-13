@@ -1,7 +1,7 @@
 import { EditProfile } from './edit_profile.js';
 import { STORE } from './store.js';
 import { UserServices } from './services/user_services.js'
-import { SignUp } from './signup.js';
+import { Login } from './login.js';
 
 export function ViewProfile(parentSelector) {
   if(!ViewProfile.instance) {
@@ -66,8 +66,11 @@ ViewProfile.prototype.deleteUser = function() {
         await userServices.delete(sessionStorage.getItem('id'));
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('id');
-        const signUp = new SignUp();
-        signUp.render();
+        STORE.user = {};
+        STORE.boards = [];
+        STORE.currentBoard = null;
+        const login = new Login();
+        login.render();
       } catch (e) {
         alert(e.message)
       }
