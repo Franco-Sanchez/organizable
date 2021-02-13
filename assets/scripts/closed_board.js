@@ -1,6 +1,7 @@
 import { STORE } from './store.js';
 import { BoardServices} from './services/board_services.js';
 import { ClosedBoards } from './closed_boards.js';
+import { CurrentBoard } from './current_board.js'
 
 export function ClosedBoard(parentSelector, dataBoard) {
   this.parentSelector = parentSelector;
@@ -8,7 +9,7 @@ export function ClosedBoard(parentSelector, dataBoard) {
   this.data = dataBoard;
   this.toString = function() {
     return `
-    <li data-id="${this.data.id}" style="background-color:${this.data.color}">
+    <li class="js-show-board-${this.data.id}" data-id="${this.data.id}" style="background-color:${this.data.color}">
       <h3>${this.data.name}</h3>
       <div>
         <img class="js-trash-${this.data.id}" src="./assets/images/trash.svg" alt="trash">
@@ -21,6 +22,7 @@ export function ClosedBoard(parentSelector, dataBoard) {
 ClosedBoard.prototype.addEventListeners = function() {
   this.changeStateClosed();
   this.deleteBoard();
+  this.renderShowBoard();
 }
 
 ClosedBoard.prototype.changeStateClosed = function() {
@@ -60,4 +62,24 @@ ClosedBoard.prototype.deleteBoard = function() {
         alert(e)
       }
     })
+}
+
+ClosedBoard.prototype.renderShowBoard = function() {
+  const board = this.parentElement.querySelector(`.js-show-board-${this.data.id}`);
+  const trash = board.querySelector(`.js-trash-${this.data.id}`);
+  const returnBoard = board.querySelector(`.js-return-${this.data.id}`);
+  board.addEventListener('click', async (e) => {
+    if(e.target !== trash && e.target !== returnBoard) {
+      try {
+        const boardId = parseInt(board.dataset.id)
+        const boardServices = new BoardServices();
+        STORE.currentBoard = await boardServices.show(boardId);
+        const currentBoard = new CurrentBoard('.js-content');
+        currentBoard.render();
+      } catch (e) {
+        console.log(e);
+        alert(e.message)
+      }
+    }
+  })
 }
