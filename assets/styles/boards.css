@@ -37,3 +37,13 @@
   font-size: 16px;
   line-height: 20px;
 }
+
+.boards-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  color: #172B4D;
+  background: #F0F2F5;
+  border-radius: 3px;
+}
