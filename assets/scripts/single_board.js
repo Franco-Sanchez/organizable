@@ -1,6 +1,7 @@
 import { STORE } from './store.js';
 import { BoardServices } from './services/board_services.js';
 import { MyBoards } from './my_boards.js';
+import { CurrentBoard } from './current_board.js';
 
 export function SingleBoard(parentSelector, dataBoard) {
   this.parentSelector = parentSelector;
@@ -8,11 +9,11 @@ export function SingleBoard(parentSelector, dataBoard) {
   this.data = dataBoard;
   this.toString = function() {
     return `
-    <li data-id="${this.data.id}" style="background-color:${this.data.color}">
+    <li class="js-show-board-${this.data.id}" data-id="${this.data.id}" style="background-color:${this.data.color}">
       <h3>${this.data.name}</h3>
       <div>
-        <img class="js-closed-icon" src="./assets/images/closed.svg" alt="closed">
-        <img class="js-toggle-star" src="./assets/images/board_normal.svg" alt="board-normal">
+        <img class="js-closed-icon-${this.data.id}" src="./assets/images/closed.svg" alt="closed">
+        <img class="js-toggle-star-${this.data.id}" src="./assets/images/board_normal.svg" alt="board-normal">
       </div>
     </li>`
   }
@@ -21,12 +22,12 @@ export function SingleBoard(parentSelector, dataBoard) {
 SingleBoard.prototype.addEventListeners = function() {
   this.changeStateStarred();
   this.changeStateClosed();
+  this.renderShowBoard();
 }
 
 SingleBoard.prototype.changeStateStarred = function() {
-  const stars = this.parentElement.querySelectorAll('.js-toggle-star')
-  stars.forEach(star => {
-    star.addEventListener('click', async (e) => {
+  const star = this.parentElement.querySelector(`.js-toggle-star-${this.data.id}`)
+  star.addEventListener('click', async (e) => {
       try {
         const boardId = parseInt(star.closest('LI').dataset.id)
         const boardSelected = STORE.boards.find(board => board.id === boardId);
@@ -42,16 +43,15 @@ SingleBoard.prototype.changeStateStarred = function() {
         const myBoards = new MyBoards();
         myBoards.render(); 
       } catch (e) {
-        alert(e)
+        console.log(e)
+        alert(e.message)
       }
-    })
-  });
+  })
 }
 
 SingleBoard.prototype.changeStateClosed = function() {
-  const closedIcons = this.parentElement.querySelectorAll('.js-closed-icon');
-  closedIcons.forEach(closedIcon => {
-    closedIcon.addEventListener('click', async (e) => {
+  const closedIcon = this.parentElement.querySelector(`.js-closed-icon-${this.data.id}`);
+  closedIcon.addEventListener('click', async (e) => {
       try {
         const boardId = parseInt(closedIcon.closest('LI').dataset.id);
         const boardSelected = STORE.boards.find(board => board.id === boardId);
@@ -67,8 +67,28 @@ SingleBoard.prototype.changeStateClosed = function() {
         const myBoards = new MyBoards();
         myBoards.render();
       }catch(e) {
+        console.log(e);
+        alert(e.message)
+    }
+  })
+}
+
+SingleBoard.prototype.renderShowBoard = function() {
+  const board = this.parentElement.querySelector(`.js-show-board-${this.data.id}`);
+  const star = board.querySelector(`.js-toggle-star-${this.data.id}`);
+  const closed = board.querySelector(`.js-closed-icon-${this.data.id}`);
+  board.addEventListener('click', async (e) => {
+    if(e.target !== star && e.target !== closed) {
+      try {
+        const boardId = parseInt(board.dataset.id)
+        const boardServices = new BoardServices();
+        STORE.currentBoard = await boardServices.show(boardId);
+        const currentBoard = new CurrentBoard('.js-content');
+        currentBoard.render();
+      } catch (e) {
+        console.log(e)
         alert(e.message)
       }
-    })
+    }
   })
 }

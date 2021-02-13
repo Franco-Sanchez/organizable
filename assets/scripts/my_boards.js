@@ -39,7 +39,6 @@ MyBoards.prototype.render = function() {
   singleBoards.forEach((singleBoard) => {
     singleBoard.addEventListeners();
   })
-  this.prueba();
 }
 
 MyBoards.prototype.generateStarredBoards = function(parentSelector) {

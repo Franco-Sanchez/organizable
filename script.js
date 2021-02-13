@@ -5,14 +5,14 @@ import { STORE } from './assets/scripts/store.js';
 import { Main } from "./assets/scripts/main.js";
 
 function returnHome() {
-  if(sessionStorage.getItem('token')) {
     const header = document.querySelector('.js-logo');
     header.addEventListener('click', () => {
-      console.log('Header')
-      const main = new Main();
-      main.render();
+      if(sessionStorage.getItem('token')) {
+        STORE.currentBoard = null;
+        const main = new Main();
+        main.render();
+      }
     })
-  }
 }
 
 async function init() {
@@ -24,6 +24,7 @@ async function init() {
         const boardServices = new BoardServices();
         STORE.user = await userServices.show(sessionStorage.getItem('id'));
         STORE.boards = await boardServices.boards();
+        STORE.currentBoard = null;
         main.render();
       } catch (e) {
         if (e.message === 'Access denied') {

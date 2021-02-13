@@ -66,6 +66,7 @@ input {
 
 li {
   list-style: none;
+  cursor: pointer;
 }
 
 a {
