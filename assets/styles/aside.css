@@ -1,0 +1,14 @@
+.view-boards__link {
+  width: 100%;
+  display: inline-block;
+  text-align: start;
+  padding: 6px 0 6px 32px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  color: #172B4D;
+}
+
+.selected {
+  background-color:#E4F0F6;;
+  color: #0079BF;
+}

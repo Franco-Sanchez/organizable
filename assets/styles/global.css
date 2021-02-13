@@ -36,6 +36,11 @@
   padding: 0;
 }
 
+body {
+  max-width: 1444px;
+  margin: 0 auto;
+}
+
 label {
   font-family: Roboto;
   font-style: normal;
@@ -109,19 +114,19 @@ p {
   color: var(--white-color);
 }
 
-main {
+.main-container {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  min-height: 100vh;
+}
+
+.content {
+  height: 100%;
+}
+
+.form {
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-.js-content {
-  width: 412px;
-  height: 532px;
-}
-
-.selected {
-  background-color: rgb(161, 177, 161);
-  color: white;
+  justify-content: center;
 }

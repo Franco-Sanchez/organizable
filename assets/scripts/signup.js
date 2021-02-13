@@ -9,7 +9,7 @@ export function SignUp(parentSelector) {
     this.parentElement = document.querySelector(parentSelector);
     this.toString = function () {
       return `
-      <section>
+      <section class="form">
       <form class="js-form-signup">
         <div>
           <label for="username">Username</label><br />

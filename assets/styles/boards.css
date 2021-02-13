@@ -1,0 +1,39 @@
+.boards-title {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  padding-left: 30px;
+  margin-bottom: 16px;
+}
+
+.boards-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(auto, 169px));
+  grid-template-rows: 96px;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.boards-box li {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 96px;
+  border-radius: 3px;
+  padding: 8px 8px 12px 8px;
+}
+
+.boards-box div{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.boards-box img {
+  margin-left: 8px;
+}
+
+.boards-box h3 {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 20px;
+}

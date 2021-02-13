@@ -1,0 +1,8 @@
+.view-boards {
+  display: grid;
+  grid-template-columns: minmax(auto, 240px) 1fr;
+  column-gap: 30px;
+  padding: 32px 21% 0 19%;
+  height: 100%;
+}
+

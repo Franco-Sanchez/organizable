@@ -6,7 +6,7 @@ export function CurrentBoard(parentSelector) {
   this.parentElement = document.querySelector(parentSelector);
   this.toString = function () {
     return `
-      <section class="js-container-current-board" style="background-color:${
+      <section class="js-container-current-board current-board" style="background-color:${
         STORE.currentBoard.color
       }">
         <h3>${STORE.currentBoard.name}</h3>
