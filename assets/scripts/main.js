@@ -3,6 +3,7 @@ import { MyBoards } from "./my_boards.js";
 import { ClosedBoards } from './closed_boards.js';
 import { Login } from './login.js';
 import { ViewProfile } from "./view_profile.js";
+import { STORE } from './store.js';
 
 export function Main(parentSelector) {
   if(!Main.instance) {
@@ -64,10 +65,14 @@ Main.prototype.addRedirectListener = function() {
               await logOut.logout();
               sessionStorage.removeItem('token');
               sessionStorage.removeItem('id');
+              STORE.user = {};
+              STORE.boards = [];
+              STORE.currentBoard = null;
               const login = new Login();
               login.render();
             }catch(e) {
-              alert(e.message)
+              console.log(e);
+              alert(e.message);
             }
             break;
           default:

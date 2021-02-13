@@ -11,8 +11,8 @@ export function ClosedBoard(parentSelector, dataBoard) {
     <li data-id="${this.data.id}" style="background-color:${this.data.color}">
       <h3>${this.data.name}</h3>
       <div>
-        <img class="js-trash" src="./assets/images/trash.svg" alt="trash">
-        <img class="js-return" src="./assets/images/return.svg" alt="return-icon">
+        <img class="js-trash-${this.data.id}" src="./assets/images/trash.svg" alt="trash">
+        <img class="js-return-${this.data.id}" src="./assets/images/return.svg" alt="return-icon">
       </div>
     </li> `
   }
@@ -24,8 +24,7 @@ ClosedBoard.prototype.addEventListeners = function() {
 }
 
 ClosedBoard.prototype.changeStateClosed = function() {
-  const closedIcons = this.parentElement.querySelectorAll('.js-return');
-  closedIcons.forEach(closedIcon => {
+  const closedIcon = this.parentElement.querySelector(`.js-return-${this.data.id}`);
     closedIcon.addEventListener('click', async (e) => {
       try {
         const boardId = parseInt(closedIcon.closest('LI').dataset.id);
@@ -45,13 +44,11 @@ ClosedBoard.prototype.changeStateClosed = function() {
         alert(e.message)
       }
     })
-  })
 }
 
 ClosedBoard.prototype.deleteBoard = function() {
-  const trashes = this.parentElement.querySelectorAll('.js-trash');
-  trashes.forEach(trash => {
-    trash.addEventListener('click', async (e) => {
+  const trash = this.parentElement.querySelector(`.js-trash-${this.data.id}`);
+  trash.addEventListener('click', async (e) => {
       try {
         const boardId = parseInt(trash.closest('LI').dataset.id);
         const boardServices = new BoardServices();
@@ -63,5 +60,4 @@ ClosedBoard.prototype.deleteBoard = function() {
         alert(e)
       }
     })
-  });
 }

@@ -80,7 +80,7 @@ SignUp.prototype.addListenerLoginView = function () {
   const changeLogin = this.parentElement.querySelector(".js-login-view");
   changeLogin.addEventListener("click", (e) => {
     e.preventDefault();
-    const login = new Login(".js-content");
+    const login = new Login();
     login.render();
   });
 };

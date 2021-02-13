@@ -68,7 +68,7 @@ Login.prototype.addListenerSignUpView = function () {
   const changeSignUp = this.parentElement.querySelector(".js-signup-view");
   changeSignUp.addEventListener("click", (e) => {
     e.preventDefault();
-    const signUp = new SignUp();
+    const signUp = new SignUp('.js-content');
     signUp.render();
   });
 };

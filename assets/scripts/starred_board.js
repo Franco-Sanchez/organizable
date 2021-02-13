@@ -1,6 +1,7 @@
 import { STORE } from './store.js';
 import { BoardServices } from "./services/board_services.js";
 import { MyBoards } from './my_boards.js';
+import { CurrentBoard } from './current_board.js';
  
 export function StarredBoard(parentSelector, dataBoard) {
   this.parentSelector = parentSelector;
@@ -8,10 +9,10 @@ export function StarredBoard(parentSelector, dataBoard) {
   this.data = dataBoard;
   this.toString = function() {
     return `
-    <li data-id="${this.data.id}" style="background-color:${this.data.color}">
+    <li class="js-show-board-${this.data.id}" data-id="${this.data.id}" style="background-color:${this.data.color}">
       <h3>${this.data.name}</h3>
       <div>
-        <img class="js-toggle-star" src="./assets/images/starred.svg" alt="starred">
+        <img class="js-toggle-star-${this.data.id}" src="./assets/images/starred.svg" alt="starred">
       </div>
     </li>`
   }
@@ -19,11 +20,11 @@ export function StarredBoard(parentSelector, dataBoard) {
 
 StarredBoard.prototype.addEventListeners = function () {
   this.changeStateStarred();
+  this.renderShowBoard();
 }
 
 StarredBoard.prototype.changeStateStarred = function () {
-  const stars = this.parentElement.querySelectorAll('.js-toggle-star')
-  stars.forEach(star => {
+  const star = this.parentElement.querySelector(`.js-toggle-star-${this.data.id}`)
     star.addEventListener('click', async (e) => {
       try {
         const boardId = parseInt(star.closest('LI').dataset.id)
@@ -40,8 +41,27 @@ StarredBoard.prototype.changeStateStarred = function () {
         const myBoards = new MyBoards();
         myBoards.render(); 
       } catch (e) {
+        console.log(e)
         alert(e)
       }
     })
+}
+
+StarredBoard.prototype.renderShowBoard = function() {
+  const board = this.parentElement.querySelector(`.js-show-board-${this.data.id}`);
+  const star = board.querySelector(`.js-toggle-star-${this.data.id}`)
+  board.addEventListener('click', async (e) => {
+    if(e.target !== star) {
+      try {
+        const boardId = parseInt(board.dataset.id)
+        const boardServices = new BoardServices();
+        STORE.currentBoard = await boardServices.show(boardId);
+        const currentBoard = new CurrentBoard('.js-content');
+        currentBoard.render();
+      } catch (e) {
+        console.log(e);
+        alert(e.message)
+      }
+    }
   });
 }
