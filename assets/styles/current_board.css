@@ -1,3 +1,27 @@
 .current-board {
   height: 100%;
+  padding: 16px 8px 0 8px;
+}
+
+.current-board h3 {
+  font-family: Roboto;
+  font-size: 18px;
+  line-height: 32px;
+}
+
+.current-board article {
+  display: grid;
+  grid-template-columns: max-content repeat(2, min-content);
+  column-gap: 16px;
+}
+
+.current-board div {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 3px;
+  cursor: pointer;
 }
