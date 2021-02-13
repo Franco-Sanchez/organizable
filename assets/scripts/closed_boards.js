@@ -7,11 +7,11 @@ export function ClosedBoards(parentSelector) {
     this.parentElement = document.querySelector(parentSelector)
     this.toString = function() {
       return `
-        <div>
+        <div class="boards-title">
           <img src="./assets/images/closed_section.svg" alt="closed_section"> 
           <h2>Closed boards</h2>
         </div>
-        <ul class="js-closed-boards"></ul>
+        <ul class="js-closed-boards boards-box"></ul>
       `
     }
     ClosedBoards.instance = this;

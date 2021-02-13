@@ -10,7 +10,7 @@ export function Login(parentSelector) {
     this.parentElement = document.querySelector(parentSelector);
     this.toString = function () {
       return `
-      <section>
+      <section class="form">
         <form class="js-form-login">
           <div>
             <label for="username">Username</label><br />

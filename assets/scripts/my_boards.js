@@ -8,16 +8,16 @@ export function MyBoards(parentSelector) {
     this.parentElement = document.querySelector(parentSelector)
     this.toString = function() {
       return `
-      <div>
+      <div class="boards-title">
         <img src="./assets/images/starred_section.svg" alt="starred_section">
         <h2>Your Starred Boards</h2>
       </div>
-      <ul class="js-starred-boards"></ul>
-      <div>
+      <ul class="js-starred-boards boards-box"></ul>
+      <div class="boards-title">
         <img src="./assets/images/brackets.svg" alt="brackets">
         <h2>Your Boards</h2>
       </div>
-      <ul class="js-single-boards"></ul>
+      <ul class="js-single-boards boards-box"></ul>
       <a href="#">Create a new board</a>
       `
     }

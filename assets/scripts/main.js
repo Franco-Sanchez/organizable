@@ -11,23 +11,25 @@ export function Main(parentSelector) {
     this.parentElement = document.querySelector(parentSelector);
     this.toString = function() {
       return `
+      <section class="view-boards">
         <aside>
           <ul class="js-views">
             <li>
-              <a class="js-redirect selected" data-value="my_boards" href="#">My boards</a>
+              <a class="js-redirect view-boards__link selected" data-value="my_boards" href="#">My boards</a>
             </li>
             <li>
-              <a class="js-redirect" data-value="closed_boards" href="#">Closed boards</a>
+              <a class="js-redirect view-boards__link" data-value="closed_boards" href="#">Closed boards</a>
             </li>
             <li>
-              <a class="js-redirect" data-value="my_profile" href="#">My profile</a>
+              <a class="js-redirect view-boards__link" data-value="my_profile" href="#">My profile</a>
             </li>
             <li>
-              <a class="js-redirect" data-value="log_out" href="#">Log out</a>
+              <a class="js-redirect view-boards__link" data-value="log_out" href="#">Log out</a>
             </li>
           </ul>
         </aside>
         <section class="js-container"></section>
+      </section>
       `
     }
     Main.instance = this;
