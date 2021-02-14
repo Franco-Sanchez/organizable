@@ -38,6 +38,7 @@ export function EditProfile(parentSelector) {
 }
 
 EditProfile.prototype.render = function() {
+  this.parentElement = document.querySelector(this.parentSelector);
   this.parentElement.innerHTML = this;
   this.desactiveEdit();
   this.addFormEdit();

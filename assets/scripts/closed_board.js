@@ -1,7 +1,6 @@
 import { STORE } from './store.js';
 import { BoardServices} from './services/board_services.js';
 import { ClosedBoards } from './closed_boards.js';
-// import { CurrentBoard } from './current_board.js'
 
 export function ClosedBoard(parentSelector, dataBoard) {
   this.parentSelector = parentSelector;

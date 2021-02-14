@@ -1,6 +1,6 @@
 .lists-box {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 272px);
+  grid-template-columns: repeat(auto-fill, 260px);
   gap: 8px;
   margin-top: 16px;
 }
@@ -23,4 +23,50 @@
   font-size: 14px;
   line-height: 20px;
   color: #172B4D;
+}
+
+.lists-box .list__open-form {
+  width: 100%;
+  justify-content: start;
+  height: max-content;
+  padding: 10px 0 10px 10px;
+}
+
+.list__open-form img {
+  margin-right: 5px;
+}
+
+.list__form {
+  background-color: #EBECF0;
+  height: max-content;
+  padding: 8px 0 8px 8px;
+  border-radius: 3px;
+  display: none;
+}
+
+.list__form input {
+  border: 1px solid #0079BF;
+  padding-left: 8px;
+  outline: none;
+  color: #172B4D;
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.list__form div {
+  width: max-content;
+  justify-content: start;
+  margin-top: 8px;
+}
+
+.list__form button {
+  width: 77px;
+  margin-right: 8px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-size: 14px;
 }
