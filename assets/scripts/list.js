@@ -10,7 +10,7 @@ export function List(parentSelector, dataList) {
   this.data = dataList;
   this.toString = function () {
     return `
-      <li class="js-list-${this.data.listId} list">
+      <li class="js-list-${this.data.listId} list" draggable="true">
         <header class="list-header">
           <h4>${this.data.name}</h4>
           <img class="js-delete-list-${this.data.listId}" src="./assets/images/delete_list.svg" alt="delete-list">
