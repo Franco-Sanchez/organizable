@@ -14,15 +14,30 @@ export function CurrentBoard(parentSelector) {
       }">
         <article>
           <h3>${STORE.currentBoard.name}</h3>
-          <div class="js-star-${STORE.currentBoard.id}">${
-      STORE.currentBoard.starred
-        ? `<img src="./assets/images/starred.svg" alt="star">`
-        : `<img src="./assets/images/board_normal.svg" alt="star">`
-    }
+          ${
+            STORE.currentBoard.closed
+              ? `<div class="js-trash-${STORE.currentBoard.id}">
+            <img src="./assets/images/trash.svg" alt="trash">
           </div>
-          <div class="js-current-closed-${STORE.currentBoard.id}">
+          <div class="js-return-${STORE.currentBoard.id}">
+            <img src="./assets/images/return.svg" alt="return-icon">
+          </div>
+          `
+              : `<div class="js-star-${STORE.currentBoard.id}">
+            ${
+              STORE.currentBoard.starred
+                ? `<img src="./assets/images/starred.svg" alt="star">`
+                : `<img src="./assets/images/board_normal.svg" alt="star">`
+            }
+          </div>
+          ${
+            !STORE.currentBoard.starred && !STORE.currentBoard.closed
+              ? `<div class="js-current-closed-${STORE.currentBoard.id}">
             <img src="./assets/images/closed.svg" alt="star">
-          </div>
+          </div>`
+              : ""
+          }`
+          }
         </article>
         <ul class="js-lists lists-box"></ul>
       </section>
@@ -38,6 +53,8 @@ CurrentBoard.prototype.render = function () {
   });
   this.changeStateStarred();
   this.changeStateClosed();
+  this.returnStateClosed();
+  this.deleteBoard();
   this.openFormList();
   this.closeFormList();
   this.addFormList();
@@ -68,54 +85,107 @@ CurrentBoard.prototype.changeStateStarred = function () {
   const star = this.parentElement.querySelector(
     `.js-star-${STORE.currentBoard.id}`
   );
-  star.addEventListener("click", async (e) => {
-    try {
-      const boardServices = new BoardServices();
-      STORE.currentBoard = await boardServices.update(
-        STORE.currentBoard.id,
-        !STORE.currentBoard.starred,
-        STORE.currentBoard.closed
-      );
-      STORE.boards = STORE.boards.map((board) => {
-        if (board.id === STORE.currentBoard.id) {
-          return STORE.currentBoard;
-        }
-        return board;
-      });
-      this.render();
-    } catch (e) {
-      console.log(e);
-      alert(e);
-    }
-  });
+  if (star) {
+    star.addEventListener("click", async (e) => {
+      try {
+        const boardServices = new BoardServices();
+        STORE.currentBoard = await boardServices.update(
+          STORE.currentBoard.id,
+          !STORE.currentBoard.starred,
+          STORE.currentBoard.closed
+        );
+        STORE.boards = STORE.boards.map((board) => {
+          if (board.id === STORE.currentBoard.id) {
+            return STORE.currentBoard;
+          }
+          return board;
+        });
+        this.render();
+      } catch (e) {
+        console.log(e);
+        alert(e);
+      }
+    });
+  }
 };
 
 CurrentBoard.prototype.changeStateClosed = function () {
   const closed = this.parentElement.querySelector(
     `.js-current-closed-${STORE.currentBoard.id}`
   );
-  closed.addEventListener("click", async (e) => {
-    try {
-      const boardServices = new BoardServices();
-      STORE.currentBoard = await boardServices.update(
-        STORE.currentBoard.id,
-        STORE.currentBoard.starred,
-        true
-      );
-      STORE.boards = STORE.boards.map((board) => {
-        if (board.id === STORE.currentBoard.id) {
-          return STORE.currentBoard;
-        }
-        return board;
-      });
-      STORE.currentBoard = null;
-      const main = new Main();
-      main.render();
-    } catch (e) {
-      console.log(e);
-      alert(e.message);
-    }
-  });
+  if (closed) {
+    closed.addEventListener("click", async (e) => {
+      try {
+        const boardServices = new BoardServices();
+        STORE.currentBoard = await boardServices.update(
+          STORE.currentBoard.id,
+          STORE.currentBoard.starred,
+          true
+        );
+        STORE.boards = STORE.boards.map((board) => {
+          if (board.id === STORE.currentBoard.id) {
+            return STORE.currentBoard;
+          }
+          return board;
+        });
+        this.render();
+      } catch (e) {
+        console.log(e);
+        alert(e.message);
+      }
+    });
+  }
+};
+
+CurrentBoard.prototype.returnStateClosed = function () {
+  const returnBoard = this.parentElement.querySelector(
+    `.js-return-${STORE.currentBoard.id}`
+  );
+  if (returnBoard) {
+    returnBoard.addEventListener("click", async () => {
+      try {
+        const boardServices = new BoardServices();
+        STORE.currentBoard = await boardServices.update(
+          STORE.currentBoard.id,
+          STORE.currentBoard.starred,
+          false
+        );
+        STORE.boards = STORE.boards.map(board => {
+          if(board.id === STORE.currentBoard.id) {
+            return STORE.currentBoard
+          }
+          return board
+        })
+        this.render();
+      } catch (e) {
+        console.log(e);
+        alert(e.message);
+      }
+    });
+  }
+};
+
+CurrentBoard.prototype.deleteBoard = function () {
+  const deleteBoard = this.parentElement.querySelector(
+    `.js-trash-${STORE.currentBoard.id}`
+  );
+  if (deleteBoard) {
+    deleteBoard.addEventListener("click", async () => {
+      try {
+        const boardServices = new BoardServices();
+        await boardServices.delete(STORE.currentBoard.id);
+        STORE.boards = STORE.boards.filter(
+          (board) => board.id !== STORE.currentBoard.id
+        );
+        STORE.currentBoard = null;
+        const main = new Main();
+        main.render();
+      } catch (e) {
+        console.log(e);
+        alert(e.message);
+      }
+    });
+  }
 };
 
 CurrentBoard.prototype.openFormList = function () {
