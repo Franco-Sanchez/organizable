@@ -1,3 +1,7 @@
+import { CurrentBoard } from "./current_board.js";
+import { CardServices } from "./services/card_services.js";
+import { STORE } from "./store.js";
+
 export function ModalCard(parentSelector, dataCard) {
     this.parentSelector = parentSelector;
     this.parentElement = document.querySelector(parentSelector);
@@ -13,7 +17,7 @@ export function ModalCard(parentSelector, dataCard) {
             <article>
               <div>
                 <h5>LABELS</h5>
-                <ul class="js-labels-card-${this.data.cardId}"></ul>
+                <ul class="js-labels-card-${this.data.id}"></ul>
               </div>
               <div>
                 <h5>DESCRIPTION</h5>
@@ -44,6 +48,7 @@ export function ModalCard(parentSelector, dataCard) {
 ModalCard.prototype.render = function() {
   this.parentElement.innerHTML = this;
   this.closeModal();
+  this.deleteCard();
 }
 
 ModalCard.prototype.closeModal = function() {
@@ -51,5 +56,32 @@ ModalCard.prototype.closeModal = function() {
   const section = document.querySelector('.js-modal-card');
   closeModal.addEventListener('click', () => {
     section.style.display = 'none';
+  })
+}
+
+ModalCard.prototype.deleteCard = function() {
+  const deleteCard = this.parentElement.querySelector('.js-close-delete-card');
+  const section = document.querySelector('.js-modal-card');
+  deleteCard.addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      const cardServices = new CardServices();
+      await cardServices.delete(this.data.listId, this.data.id)
+      STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
+        if(list.listId === this.data.listId) {
+          return {
+            ...list, 
+            cards: list.cards.filter(card => card.cardId !== this.data.id)
+          }
+        }
+        return list
+      })
+      section.style.display = 'none';
+      const currentBoard = new CurrentBoard('.js-content');
+      currentBoard.render();
+    } catch (e) {
+      console.log(e);
+      alert(e.message);
+    }
   })
 }

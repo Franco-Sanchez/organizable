@@ -35,7 +35,7 @@ List.prototype.addEventListeners = function () {
 List.prototype.generateCards = function (parentSelector) {
   const container = this.parentElement.querySelector(parentSelector);
   const cards = this.data.cards.map((card) => {
-    return new Card(parentSelector, card);
+    return new Card(parentSelector, this.data, card);
   });
   container.innerHTML = cards.join("");
   container.innerHTML += `

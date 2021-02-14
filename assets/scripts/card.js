@@ -1,14 +1,15 @@
 import { ModalCard } from "./modal_card.js";
-import { CardServices } from './services/card_services.js';
+import { CardServices } from "./services/card_services.js";
 
-export function Card(parentSelector, dataCard) {
+export function Card(parentSelector, dataList, dataCard) {
   this.parentSelector = parentSelector;
   this.parentElement = document.querySelector(parentSelector);
-  this.data = dataCard;
+  this.dataList = dataList;
+  this.dataCard = dataCard;
   this.toString = function() {
     return `
-    <li class="js-card-${this.data.cardId} card" draggable="true">
-      ${this.data.name}
+    <li class="js-card-${this.dataCard.cardId} card" draggable="true">
+      ${this.dataCard.name}
     </li>`
   }
 }
@@ -18,11 +19,13 @@ Card.prototype.addEventListeners = function() {
 }
 
 Card.prototype.viewModalCard = function() {
-  const card = this.parentElement.querySelector(`.js-card-${this.data.cardId}`);
+  const card = this.parentElement.querySelector(`.js-card-${this.dataCard.cardId}`);
   const section = document.querySelector('.js-modal-card');
-  card.addEventListener('click', () => {
+  card.addEventListener('click', async () => {
     section.style.display = 'flex';
-    const modalCard = new ModalCard('.js-modal-card', this.data);
+    const cardServices = new CardServices();
+    const card = await cardServices.show(this.dataList.listId, this.dataCard.cardId);
+    const modalCard = new ModalCard('.js-modal-card', card);
     modalCard.render();
   })
 }
