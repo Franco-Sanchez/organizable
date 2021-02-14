@@ -2,6 +2,7 @@ import { Main } from './main.js';
 import { BoardServices } from "./services/board_services.js";
 import { STORE } from "./store.js";
 import { List } from './list.js';
+import { ListServices } from './services/list_services.js';
 
 export function CurrentBoard(parentSelector) {
   this.parentSelector = parentSelector;
@@ -37,6 +38,9 @@ CurrentBoard.prototype.render = function () {
   });
   this.changeStateStarred();
   this.changeStateClosed();
+  this.openForm();
+  this.closeForm();
+  this.addFormList();
 };
 
 CurrentBoard.prototype.generateLists = function (parentSelector) {
@@ -45,6 +49,18 @@ CurrentBoard.prototype.generateLists = function (parentSelector) {
     return new List(parentSelector, list)
   })
   container.innerHTML = lists.join('');
+  container.innerHTML += `
+    <div class="js-open-form list__open-form">
+      <img src="./assets/images/open_form.svg" alt="open-form">
+      <p>Add a list</p>
+    </div>
+    <form class="js-create-list list__form">
+      <input type="text" placeholder="Enter list title..." name="name" required>
+      <div>
+        <button type="submit">Add List</button>
+        <img class="js-close-form-list" src="./assets/images/close_form.svg" alt="close-form">
+      </div>
+    </form>`
   return lists
 }
 
@@ -101,3 +117,41 @@ CurrentBoard.prototype.changeStateClosed = function () {
     }
   });
 };
+
+CurrentBoard.prototype.openForm = function() {
+  const openForm = this.parentElement.querySelector('.js-open-form');
+  const form = this.parentElement.querySelector('.js-create-list');
+  openForm.addEventListener('click', () => {
+    openForm.style.display = 'none';
+    form.style.display = 'block';
+  })
+}
+
+CurrentBoard.prototype.closeForm = function() {
+  const openForm = this.parentElement.querySelector('.js-open-form');
+  const form = this.parentElement.querySelector('.js-create-list');
+  const closeForm = this.parentElement.querySelector('.js-close-form-list');
+  closeForm.addEventListener('click', () => {
+    openForm.style.display = 'flex';
+    form.style.display = 'none';
+    form.reset();
+  })
+}
+
+CurrentBoard.prototype.addFormList = function() {
+  const form = this.parentElement.querySelector('.js-create-list');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const name = form.name.value
+      const listServices = new ListServices();
+      const data = await listServices.create(STORE.currentBoard.id, name);
+      const newList = { listId: data.id, name: data.name, pos: data.pos, closed: data.pos, cards:[] }
+      STORE.currentBoard.lists = [...STORE.currentBoard.lists, newList];
+      this.render();
+    } catch (e) {
+      console.log(e)
+      alert(e.message);
+    }
+  })
+}
