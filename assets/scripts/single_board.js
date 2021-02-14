@@ -11,7 +11,7 @@ export function SingleBoard(parentSelector, dataBoard) {
     return `
     <li class="js-show-board-${this.data.id}" data-id="${this.data.id}" style="background-color:${this.data.color}">
       <h3>${this.data.name}</h3>
-      <div>
+      <div class="js-board-icons-${this.data.id} board-icons">
         <img class="js-closed-icon-${this.data.id}" src="./assets/images/closed.svg" alt="closed">
         <img class="js-toggle-star-${this.data.id}" src="./assets/images/board_normal.svg" alt="board-normal">
       </div>
@@ -23,6 +23,7 @@ SingleBoard.prototype.addEventListeners = function() {
   this.changeStateStarred();
   this.changeStateClosed();
   this.renderShowBoard();
+  this.showHideIcons();
 }
 
 SingleBoard.prototype.changeStateStarred = function() {
@@ -90,5 +91,17 @@ SingleBoard.prototype.renderShowBoard = function() {
         alert(e.message)
       }
     }
+  })
+}
+
+SingleBoard.prototype.showHideIcons = function() {
+  const singleBoard = this.parentElement.querySelector(`.js-show-board-${this.data.id}`);
+  const boardIcons = this.parentElement.querySelector(`.js-board-icons-${this.data.id}`);
+  singleBoard.addEventListener('mouseover', () => {
+    boardIcons.style.display = 'flex';
+  })
+
+  singleBoard.addEventListener('mouseleave', () => {
+    boardIcons.style.display = 'none';
   })
 }
