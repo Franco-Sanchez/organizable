@@ -13,3 +13,20 @@
   line-height: 20px;
   padding: 4px 8px;
 }
+
+.cards-box .card__open-form {
+  width: 100%;
+  height: max-content;
+  justify-content: start;
+  background-color: transparent;
+  padding-left: 6px;
+}
+
+.card__open-form p {
+  color:#5E6C84;
+  font-weight: 400;
+}
+
+.card__open-form img {
+  margin-right: 4px;
+}
