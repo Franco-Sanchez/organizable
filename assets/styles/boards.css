@@ -27,6 +27,10 @@
   justify-content: flex-end;
 }
 
+.boards-box .board-icons {
+  display: none;
+}
+
 .boards-box img {
   margin-left: 8px;
 }
