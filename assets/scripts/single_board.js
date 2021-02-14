@@ -1,6 +1,5 @@
 import { STORE } from './store.js';
 import { BoardServices } from './services/board_services.js';
-import { MyBoards } from './my_boards.js';
 import { CurrentBoard } from './current_board.js';
 import { Main } from './main.js';
 

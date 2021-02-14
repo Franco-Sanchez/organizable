@@ -1,6 +1,7 @@
 import { Main } from './main.js';
 import { BoardServices } from "./services/board_services.js";
 import { STORE } from "./store.js";
+import { List } from './list.js';
 
 export function CurrentBoard(parentSelector) {
   this.parentSelector = parentSelector;
@@ -22,7 +23,7 @@ export function CurrentBoard(parentSelector) {
             <img src="./assets/images/closed.svg" alt="star">
           </div>
         </article>
-        <ul class="js-lists"></ul>
+        <ul class="js-lists lists-box"></ul>
       </section>
     `;
   };
@@ -30,9 +31,22 @@ export function CurrentBoard(parentSelector) {
 
 CurrentBoard.prototype.render = function () {
   this.parentElement.innerHTML = this;
+  const lists = this.generateLists('.js-lists')
+  lists.forEach(list => {
+    list.addEventListeners();
+  });
   this.changeStateStarred();
   this.changeStateClosed();
 };
+
+CurrentBoard.prototype.generateLists = function (parentSelector) {
+  const container = this.parentElement.querySelector(parentSelector);
+  const lists = STORE.currentBoard.lists.map(list => {
+    return new List(parentSelector, list)
+  })
+  container.innerHTML = lists.join('');
+  return lists
+}
 
 CurrentBoard.prototype.changeStateStarred = function () {
   const star = this.parentElement.querySelector(
