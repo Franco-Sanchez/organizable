@@ -19,7 +19,7 @@ export function CurrentBoard(parentSelector) {
               ? `<div class="js-trash-${STORE.currentBoard.id}">
             <img src="./assets/images/trash.svg" alt="trash">
           </div>
-          <div class="js-return-${STORE.currentBoard.id}">
+          <div class="js-change-closed-${STORE.currentBoard.id}">
             <img src="./assets/images/return.svg" alt="return-icon">
           </div>
           `
@@ -32,7 +32,7 @@ export function CurrentBoard(parentSelector) {
           </div>
           ${
             !STORE.currentBoard.starred && !STORE.currentBoard.closed
-              ? `<div class="js-current-closed-${STORE.currentBoard.id}">
+              ? `<div class="js-change-closed-${STORE.currentBoard.id}">
             <img src="./assets/images/closed.svg" alt="star">
           </div>`
               : ""
@@ -53,7 +53,6 @@ CurrentBoard.prototype.render = function () {
   });
   this.changeStateStarred();
   this.changeStateClosed();
-  this.returnStateClosed();
   this.deleteBoard();
   this.openFormList();
   this.closeFormList();
@@ -110,58 +109,32 @@ CurrentBoard.prototype.changeStateStarred = function () {
 };
 
 CurrentBoard.prototype.changeStateClosed = function () {
-  const closed = this.parentElement.querySelector(
-    `.js-current-closed-${STORE.currentBoard.id}`
+  const closeds = this.parentElement.querySelectorAll(
+    `.js-change-closed-${STORE.currentBoard.id}`
   );
-  if (closed) {
-    closed.addEventListener("click", async (e) => {
-      try {
-        const boardServices = new BoardServices();
-        STORE.currentBoard = await boardServices.update(
-          STORE.currentBoard.id,
-          STORE.currentBoard.starred,
-          true
-        );
-        STORE.boards = STORE.boards.map((board) => {
-          if (board.id === STORE.currentBoard.id) {
-            return STORE.currentBoard;
-          }
-          return board;
-        });
-        this.render();
-      } catch (e) {
-        console.log(e);
-        alert(e.message);
-      }
-    });
-  }
-};
-
-CurrentBoard.prototype.returnStateClosed = function () {
-  const returnBoard = this.parentElement.querySelector(
-    `.js-return-${STORE.currentBoard.id}`
-  );
-  if (returnBoard) {
-    returnBoard.addEventListener("click", async () => {
-      try {
-        const boardServices = new BoardServices();
-        STORE.currentBoard = await boardServices.update(
-          STORE.currentBoard.id,
-          STORE.currentBoard.starred,
-          false
-        );
-        STORE.boards = STORE.boards.map(board => {
-          if(board.id === STORE.currentBoard.id) {
-            return STORE.currentBoard
-          }
-          return board
-        })
-        this.render();
-      } catch (e) {
-        console.log(e);
-        alert(e.message);
-      }
-    });
+  if (closeds) {
+    closeds.forEach(closed => {
+      closed.addEventListener("click", async (e) => {
+        try {
+          const boardServices = new BoardServices();
+          STORE.currentBoard = await boardServices.update(
+            STORE.currentBoard.id,
+            STORE.currentBoard.starred,
+            !STORE.currentBoard.closed
+          );
+          STORE.boards = STORE.boards.map((board) => {
+            if (board.id === STORE.currentBoard.id) {
+              return STORE.currentBoard;
+            }
+            return board;
+          });
+          this.render();
+        } catch (e) {
+          console.log(e);
+          alert(e.message);
+        }
+      });
+    })
   }
 };
 
