@@ -30,3 +30,12 @@
 .card__open-form img {
   margin-right: 4px;
 }
+
+.dragging {
+  opacity: 0;
+}
+
+.dashed {
+  background-color: rgba(0,0,0,0.2);
+  border: 1px dashed black;
+}

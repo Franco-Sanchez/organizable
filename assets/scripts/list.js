@@ -10,7 +10,7 @@ export function List(parentSelector, dataList) {
   this.data = dataList;
   this.toString = function () {
     return `
-      <li class="js-list-${this.data.listId} list" draggable="true">
+      <li class="js-list-${this.data.listId} list">
         <header class="list-header">
           <h4 class="js-name-list-${this.data.listId}">${this.data.name}</h4>
           <form class="js-form-edit-list-${this.data.listId} lists__form-edit">
@@ -35,6 +35,7 @@ List.prototype.addEventListeners = function () {
   this.openFormCard();
   this.closeFormCard();
   this.addFormCard();
+  this.listenDrop();
 };
 
 List.prototype.generateCards = function (parentSelector) {
@@ -181,3 +182,55 @@ List.prototype.addFormCard = function () {
     }
   });
 };
+
+List.prototype.listenDrop = function() {
+  const container = this.parentElement.querySelector(`.js-list-${this.data.listId}`);
+  container.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  })
+  container.addEventListener('drop', async (e) => {
+    try {
+      const draggable = JSON.parse(e.dataTransfer.getData('text'));
+      const selectedList = this.data.listId;
+      const cardServices = new CardServices();
+      const data = await cardServices.update(
+        draggable.listId,
+        draggable.cardId,
+        draggable.cardName,
+        selectedList.listId,
+        1,
+        draggable.cardDesc
+      );
+      const updatedCard = {
+        cardId: data.id,
+        name: data.name,
+        desc: data.desc,
+        pos: data.pos,
+        closed: data.closed,
+        labels: data.labels,
+        checkItems: 0,
+        completedCheckItems: 0,
+      }
+      STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
+        if(list.listId === selectedList.listId) {
+          return {
+            ...list,
+            cards: [updatedCard, ...list.cards]
+          }
+        }
+        if(list.listId === draggable.listId) {
+          return {
+            ...list,
+            cards: list.cards.filter(card => card.cardId !== draggable.cardId)
+          }
+        }
+        return list;
+      })
+      const currentBoard = new CurrentBoard('.js-content');
+      currentBoard.render();
+    } catch (e) {
+      console.log(e);
+      alert(e.message);
+    }
+  })
+}
