@@ -40,8 +40,8 @@ export function ModalCard(parentSelector, dataCard) {
                 </div>
               </div>
               <div class="modal__new-feature">
-                <img src="./assets/images/building.svg" alt="building">
-                <p>Building a new feature for you</p>
+                <h5>CHECKLISTS</h5>
+                <ul class="js-checklists-card-${this.data.id}"></ul>
               </div>
             </article>
             <article>
@@ -50,6 +50,11 @@ export function ModalCard(parentSelector, dataCard) {
                 <ul class="js-board-labels"></ul>
                 <a class="js-modal-create-label modal__create-label" href="#">Create a new label</a>
               </div>
+                <h6>CHECKLISTS</h6>
+              <form class="js-form-checklist modal__form-checklist">
+                <input type="text" name="name" placeholder="Checklist..." required>
+                <button type="submit">Add</button>
+              </form>
               <a class="js-close-delete-card modal__delete-card" href="#">Delete card</a>
             </article>
           </section>
@@ -65,6 +70,8 @@ ModalCard.prototype.render = function () {
   this.deleteCard();
   this.hideForm();
   this.updateCard();
+  this.showFormLabel();
+  this.addFormCreateChecklist();
 };
 
 ModalCard.prototype.closeModal = function () {
@@ -118,6 +125,8 @@ ModalCard.prototype.hideForm = function () {
 ModalCard.prototype.updateCard = function () {
   const form = this.parentElement.querySelector(".js-form-card-edit");
   const section = document.querySelector(".js-modal-card");
+  const foundList = STORE.currentBoard.lists.find(list => list.listId === this.data.listId);
+  const foundCard = foundList.cards.find(card => card.cardId === this.data.id);
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
@@ -139,9 +148,10 @@ ModalCard.prototype.updateCard = function () {
         pos: data.pos,
         closed: data.closed,
         labels: data.labels,
-        checkItems: 0,
-        completedCheckItems: 0,
+        checkItems: foundCard.checkItems,
+        completedCheckItems: foundCard.completedCheckItems
       };
+      console.log(updatedCard);
       STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
         if(list.listId === this.data.listId) {
           return {
@@ -192,3 +202,17 @@ ModalCard.prototype.deleteCard = function () {
     }
   });
 };
+
+ModalCard.prototype.showFormLabel = function() {
+  const openForm = this.parentElement.querySelector('.js-modal-create-label');
+  openForm.addEventListener('click', (e) => {
+    e.preventDefault();
+  })
+}
+
+ModalCard.prototype.addFormCreateChecklist = function() {
+  const form = this.parentElement.querySelector('.js-form-checklist');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+  })
+}

@@ -26,12 +26,16 @@ Card.prototype.listenDragEvents = function () {
     `.js-card-${this.dataCard.cardId}`
   );
   card.addEventListener("dragstart", (e) => {
+    const selectedList = STORE.currentBoard.lists.find((list) => list.listId === this.dataList.listId);
+    const foundCardDrag = selectedList.cards.find(card => card.cardId === this.dataCard.cardId);
     e.target.classList.add("dragging");
     e.dataTransfer.setData(
       "text/plain",
       JSON.stringify({
         cardName: this.dataCard.name,
         cardDesc: this.dataCard.desc,
+        cardCheckItems: foundCardDrag.checkItems,
+        cardCompletedCheckItems: foundCardDrag.completedCheckItems,
         cardId: this.dataCard.cardId,
         listId: this.dataList.listId,
       })
@@ -55,11 +59,10 @@ Card.prototype.listenDragEvents = function () {
   });
 
   card.addEventListener("drop", async (e) => {
+    // Aunque sea repetitivo, selectedList es más declarativo
+    const selectedList = STORE.currentBoard.lists.find((list) => list.listId === this.dataList.listId);
+    const foundCardDrop = selectedList.cards.find(card => card.cardId === this.dataCard.cardId); 
     try {
-      // Aunque sea repetitivo, selectedList es más declarativo
-      const selectedList = STORE.currentBoard.lists.find(
-        (list) => list.listId === this.dataList.listId
-      );
       let reorderedCards = [...selectedList.cards];
       const draggable = JSON.parse(e.dataTransfer.getData("text"));
       const dropabbleId = this.dataCard.cardId;
@@ -78,7 +81,6 @@ Card.prototype.listenDragEvents = function () {
           (card) => card.cardId === dropabbleId
         );
       }
-      
       const cardServices = new CardServices();
       const dataDrag = await cardServices.update(
         draggable.listId,
@@ -95,10 +97,9 @@ Card.prototype.listenDragEvents = function () {
         pos: dataDrag.pos,
         closed: dataDrag.closed,
         labels: dataDrag.labels,
-        checkItems: 0,
-        completedCheckItems: 0,
+        checkItems: draggable.cardCheckItems, 
+        completedCheckItems: draggable.cardCompletedCheckItems
       }
-
       const dataDrop = await cardServices.update(
         selectedList.listId,
         dropabbleId,
@@ -114,10 +115,9 @@ Card.prototype.listenDragEvents = function () {
         pos: dataDrop.pos,
         closed: dataDrop.closed,
         labels: dataDrop.labels,
-        checkItems: 0,
-        completedCheckItems: 0,
+        checkItems: foundCardDrop.checkItems,
+        completedCheckItems: foundCardDrop.completedCheckItems
       }
-
       if(dropIdx === 0 && selectedList.listId !== draggable.listId) {
         reorderedCards = [updatedDrag, ...reorderedCards]
       } else {

@@ -72,14 +72,8 @@
 
 .modal__new-feature {
   margin-top: 25px;
-  min-height: 308px;
-  width: 71%;
-  background: #EBECF0;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  min-height: 308px; /* hacer que aparezca un scroll */
+  width: 100%;
 }
 
 .modal__create-label, .modal__delete-card {
@@ -95,6 +89,7 @@
 
 .modal__create-label {
   background: rgba(9, 30, 66, 0.04);
+  margin-bottom: 16px;
 }
 
 .modal__delete-card {
@@ -163,4 +158,29 @@
   margin-right: 8px;
   cursor: pointer;
   outline: none;
+}
+
+.modal__form-checklist {
+  background: #EBECF0;
+  border-radius: 3px;
+  padding: 10px 8px 8px 8px;
+  margin-top: 8px;
+}
+
+.modal__form-checklist input {
+  width: 100%;
+  margin-bottom: 10px;
+  height: 24px;
+  border: 1px solid #0079BF;
+  outline: none;
+  font-family: Roboto;
+  padding-left: 6px;
+}
+
+.modal__form-checklist button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: white;
+  width: 40%;
 }

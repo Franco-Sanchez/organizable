@@ -166,7 +166,7 @@ List.prototype.addFormCard = function () {
         closed: data.closed,
         labels: data.labels,
         checkItems: 0,
-        completedCheckItems: 0,
+        completedCheckItems: 0
       };
       STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
         if(list.listId === this.data.listId) {
@@ -208,8 +208,8 @@ List.prototype.listenDrop = function() {
         pos: data.pos,
         closed: data.closed,
         labels: data.labels,
-        checkItems: 0,
-        completedCheckItems: 0,
+        checkItems: draggable.cardCheckItems,
+        completedCheckItems: draggable.cardCompletedCheckItems
       }
       STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
         if(list.listId === selectedListId) {
