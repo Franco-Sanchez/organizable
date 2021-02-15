@@ -12,7 +12,10 @@ export function List(parentSelector, dataList) {
     return `
       <li class="js-list-${this.data.listId} list" draggable="true">
         <header class="list-header">
-          <h4>${this.data.name}</h4>
+          <h4 class="js-name-list-${this.data.listId}">${this.data.name}</h4>
+          <form class="js-form-edit-list-${this.data.listId} lists__form-edit">
+            <input type="text" name="name" value="${this.data.name}">
+          </form>
           <img class="js-delete-list-${this.data.listId}" src="./assets/images/delete_list.svg" alt="delete-list">
         </header>
         <ul class="js-cards-${this.data.listId} cards-box"></ul>
@@ -26,6 +29,8 @@ List.prototype.addEventListeners = function () {
   cards.forEach((card) => {
     card.addEventListeners();
   });
+  this.showFormEditList();
+  this.updateList();
   this.deleteList();
   this.openFormCard();
   this.closeFormCard();
@@ -53,6 +58,44 @@ List.prototype.generateCards = function (parentSelector) {
   `;
   return cards;
 };
+
+List.prototype.showFormEditList = function() {
+  const name = this.parentElement.querySelector(`.js-name-list-${this.data.listId}`);
+  const form = this.parentElement.querySelector(`.js-form-edit-list-${this.data.listId}`);
+  name.addEventListener('click', () => {
+    name.style.display = 'none';
+    form.style.display = 'block';
+  }) 
+}
+
+List.prototype.updateList = function() {
+  const form = this.parentElement.querySelector(`.js-form-edit-list-${this.data.listId}`);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const name = form.name.value
+      const listServices = new ListServices();
+      const data = await listServices.update(STORE.currentBoard.id, this.data.listId, name)
+      STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
+        if(list.listId === data.id) {
+          return {
+            listId: data.id,
+            name: data.name,
+            pos: data.pos,
+            closed: data.closed,
+            cards: list.cards
+          }
+        }
+        return list
+      })
+      const currentBoard = new CurrentBoard('.js-content')
+      currentBoard.render();
+    } catch (e) {
+      console.log(e);
+      alert(e.message);
+    }
+  })
+}
 
 List.prototype.deleteList = function () {
   const deleteList = this.parentElement.querySelector(
