@@ -191,13 +191,13 @@ List.prototype.listenDrop = function() {
   container.addEventListener('drop', async (e) => {
     try {
       const draggable = JSON.parse(e.dataTransfer.getData('text'));
-      const selectedList = this.data.listId;
+      const selectedListId = this.data.listId;
       const cardServices = new CardServices();
       const data = await cardServices.update(
         draggable.listId,
         draggable.cardId,
         draggable.cardName,
-        selectedList.listId,
+        selectedListId,
         1,
         draggable.cardDesc
       );
@@ -212,7 +212,7 @@ List.prototype.listenDrop = function() {
         completedCheckItems: 0,
       }
       STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
-        if(list.listId === selectedList.listId) {
+        if(list.listId === selectedListId) {
           return {
             ...list,
             cards: [updatedCard, ...list.cards]
