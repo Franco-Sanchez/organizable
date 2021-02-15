@@ -1,5 +1,7 @@
+import { Checklist } from "./checklist.js";
 import { CurrentBoard } from "./current_board.js";
 import { CardServices } from "./services/card_services.js";
+import { ChecklistServices } from "./services/checklist_services.js";
 import { STORE } from "./store.js";
 
 export function ModalCard(parentSelector, dataCard) {
@@ -72,7 +74,20 @@ ModalCard.prototype.render = function () {
   this.updateCard();
   this.showFormLabel();
   this.addFormCreateChecklist();
+  const checklists = this.generateChecklists(`.js-checklists-card-${this.data.id}`);
+  checklists.forEach(checklist => {
+    checklist.addEventListeners();
+  })
 };
+
+ModalCard.prototype.generateChecklists = function(parentSelector) {
+  const container = this.parentElement.querySelector(parentSelector);
+  const checklists = this.data.checklists.map(checklist => {
+    return new Checklist(parentSelector, this.data, checklist);
+  })
+  container.innerHTML = checklists.join('');
+  return checklists;
+}
 
 ModalCard.prototype.closeModal = function () {
   const buttonsCloseModal = this.parentElement.querySelectorAll(
@@ -214,5 +229,13 @@ ModalCard.prototype.addFormCreateChecklist = function() {
   const form = this.parentElement.querySelector('.js-form-checklist');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    try {
+      const name = form.name.value;
+      const checklistServices = new ChecklistServices();
+      const data = await checklistServices.create();
+    } catch (e) {
+      console.log(e)
+      alert(e.message);
+    }
   })
 }
