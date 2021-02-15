@@ -27,14 +27,14 @@ CardServices.prototype.show = function(listId, cardId) {
   })
 }
 
-CardServices.prototype.update = function(actualListId, cardId, name, listId, pos) {
+CardServices.prototype.update = function(actualListId, cardId, name, listId, pos, desc) {
   return apiFetch(`${BASE_URL}/lists/${actualListId}/cards/${cardId}`, {
     method: 'PATCH',
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token token=${sessionStorage.getItem('token')}`
     },
-    body: JSON.stringify({ name, listId, pos })
+    body: JSON.stringify({ name, listId, pos, desc })
   })
 }
 
