@@ -97,7 +97,6 @@ ModalCard.prototype.closeModal = function () {
   buttonsCloseModal.forEach((button) => {
     button.addEventListener("click", () => {
       section.style.display = "none";
-      this.render();
     });
   });
 };

@@ -113,7 +113,7 @@ Checklist.prototype.addFormCheckItem = function () {
     try {
       const name = form.name.value;
       const checkItemServices = new CheckItemServices()
-      const data = await checkItemServices.create(this.dataChecklist.checklistId, name)
+      await checkItemServices.create(this.dataChecklist.checklistId, name)
       section.style.display = 'none';
       const currentBoard = new CurrentBoard('.js-content');
       currentBoard.render();
