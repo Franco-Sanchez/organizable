@@ -1,0 +1,51 @@
+.check-item {
+  color: #172B4D;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: Roboto;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.check-item input {
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+}
+
+.check-item__button-add {
+  display: inline-block;
+
+}
+
+.check-item__form {
+  display: none;
+  width: 272px;
+  padding: 8px 0 15px 8px;
+  background: #EBECF0;
+  border-radius: 3px;
+}
+
+.check-item__form input {
+  width: 224px;
+  height: 24px;
+  margin-bottom: 9px;
+  border: 1px solid #0079BF;
+  outline: none;
+  padding-left: 8px;
+}
+
+.check-item__form div {
+  display: flex;
+  align-items: center
+}
+
+.check-item__form button {
+  border: none;
+  color: white;
+  height: 24px;
+  cursor: pointer;
+  outline: none;
+  margin-right: 8px;
+}
