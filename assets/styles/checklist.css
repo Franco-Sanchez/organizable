@@ -1,0 +1,16 @@
+li .checklist__header {
+  padding-left: 0;
+}
+
+.checklist__header h6 {
+  font-weight: 700;
+}
+
+.checklist__header a {
+  display: inline-block;
+  background: rgba(9, 30, 66, 0.04);
+  border-radius: 3px;
+  color: #172B4D;
+  padding: 4px 16px;
+  font-size: 12px;
+}

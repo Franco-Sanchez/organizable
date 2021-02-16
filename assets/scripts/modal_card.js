@@ -227,12 +227,17 @@ ModalCard.prototype.showFormLabel = function() {
 
 ModalCard.prototype.addFormCreateChecklist = function() {
   const form = this.parentElement.querySelector('.js-form-checklist');
+  const section = document.querySelector('.js-modal-card');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
       const name = form.name.value;
       const checklistServices = new ChecklistServices();
-      const data = await checklistServices.create();
+      await checklistServices.create(this.data.id, name);
+      // hacer que se renderice el modal
+      section.style.display = 'none';
+      const currentBoard = new CurrentBoard('.js-content');
+      currentBoard.render()
     } catch (e) {
       console.log(e)
       alert(e.message);

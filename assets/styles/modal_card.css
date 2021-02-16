@@ -72,8 +72,10 @@
 
 .modal__new-feature {
   margin-top: 25px;
-  min-height: 308px; /* hacer que aparezca un scroll */
+  height: 308px;
   width: 100%;
+  overflow-y: scroll;
+  padding-right: 5px;
 }
 
 .modal__create-label, .modal__delete-card {
