@@ -43,7 +43,7 @@ export function ModalCard(parentSelector, dataCard) {
               </div>
               <div class="modal__new-feature">
                 <h5>CHECKLISTS</h5>
-                <ul class="js-checklists-card-${this.data.id}"></ul>
+                <div class="js-container-checklists"></div>
               </div>
             </article>
             <article>
@@ -74,19 +74,12 @@ ModalCard.prototype.render = function () {
   this.updateCard();
   this.showFormLabel();
   this.addFormCreateChecklist();
-  const checklists = this.generateChecklists(`.js-checklists-card-${this.data.id}`);
-  checklists.forEach(checklist => {
-    checklist.addEventListeners();
-  })
+  this.generateChecklists();
 };
 
-ModalCard.prototype.generateChecklists = function(parentSelector) {
-  const container = this.parentElement.querySelector(parentSelector);
-  const checklists = this.data.checklists.map(checklist => {
-    return new Checklist(parentSelector, this.data, checklist);
-  })
-  container.innerHTML = checklists.join('');
-  return checklists;
+ModalCard.prototype.generateChecklists = function() {
+  const checklist = new Checklist('.js-container-checklists', this.data);
+  checklist.render();
 }
 
 ModalCard.prototype.closeModal = function () {
@@ -165,7 +158,6 @@ ModalCard.prototype.updateCard = function () {
         checkItems: foundCard.checkItems,
         completedCheckItems: foundCard.completedCheckItems
       };
-      console.log(updatedCard);
       STORE.currentBoard.lists = STORE.currentBoard.lists.map(list => {
         if(list.listId === this.data.listId) {
           return {
@@ -226,17 +218,22 @@ ModalCard.prototype.showFormLabel = function() {
 
 ModalCard.prototype.addFormCreateChecklist = function() {
   const form = this.parentElement.querySelector('.js-form-checklist');
-  const section = document.querySelector('.js-modal-card');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
       const name = form.name.value;
       const checklistServices = new ChecklistServices();
-      await checklistServices.create(this.data.id, name);
-      // hacer que se renderice el modal
-      section.style.display = 'none';
-      const currentBoard = new CurrentBoard('.js-content');
-      currentBoard.render()
+      const data = await checklistServices.create(this.data.id, name);
+      const newChecklist = {
+        checklistId: data.id,
+        name: data.name,
+        pos: data.pos,
+        checkItems: []
+      }
+      this.data.checklists = [...this.data.checklists, newChecklist]
+      const checklist = new Checklist('.js-container-checklists', this.data);
+      checklist.render();
+      form.reset();
     } catch (e) {
       console.log(e)
       alert(e.message);

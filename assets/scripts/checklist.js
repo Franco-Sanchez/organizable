@@ -1,125 +1,79 @@
 import { CheckItem } from "./check_item.js";
-import { CurrentBoard } from "./current_board.js";
 import { ChecklistServices } from "./services/checklist_services.js";
-import { CheckItemServices } from './services/check_item_services.js';
 
-export function Checklist(parentSelector, dataCard, dataChecklist) {
+export function Checklist(parentSelector, dataCard) {
   this.parentSelector = parentSelector;
   this.parentElement = document.querySelector(parentSelector);
   this.dataCard = dataCard;
-  this.dataChecklist = dataChecklist;
   this.toString = function () {
     return `
-    <li class="js-checklist-${this.dataChecklist.checklistId}">
-      <header class="checklist__header">  
-        <h6>${this.dataChecklist.name}</h6>
-        <a class="js-delete-checklist-${this.dataChecklist.checklistId}" href="#">Delete</a>
-      </header>
-      <ul class="js-check-items-${this.dataChecklist.checklistId}"></ul>
-    </li>
-    `;
+    <ul class="js-checklists-card-${this.dataCard.id}"></ul>`;
   };
 }
 
-Checklist.prototype.addEventListeners = function () {
+Checklist.prototype.render = function () {
+  this.parentElement.innerHTML = this;
+  this.renderChecklists();
   this.deleteChecklist();
-  const checkItems = this.generateCheckItems(
-    `.js-check-items-${this.dataChecklist.checklistId}`
-  );
-  checkItems.forEach((checkItem) => {
-    checkItem.addEventListeners();
-  });
-  this.showFormCheckItem();
-  this.hideFromCheckItem();
-  this.addFormCheckItem();
+  this.generateCheckItems();
 };
 
-Checklist.prototype.generateCheckItems = function (parentSelector) {
-  const container = this.parentElement.querySelector(parentSelector);
-  const checkItems = this.dataChecklist.checkItems.map((checkItem) => {
-    return new CheckItem(parentSelector, this.dataChecklist, checkItem);
-  });
-  container.innerHTML = checkItems.join("");
-  container.innerHTML += `
-  <a class="js-show-form-${this.dataChecklist.checklistId} modal__button-edit">Add Item</a>
-  <form class="js-form-create-${this.dataChecklist.checklistId} check-item__form">
-    <input type="text" name="name" placeholder="Add check item...">
-    <div>
-      <button type="submit">Add</button>
-      <img class="js-close-form-${this.dataChecklist.checklistId}" src="./assets/images/close_form.svg" alt="close-form">
-    </div>
-  </form>`;
-  return checkItems;
+Checklist.prototype.renderChecklists = function () {
+  const container = this.parentElement.querySelector(
+    `.js-checklists-card-${this.dataCard.id}`
+  );
+  container.innerHTML = this.dataCard.checklists
+    .map((checklist) => this.renderChecklist(checklist))
+    .join("");
 };
 
-Checklist.prototype.deleteChecklist = function () {
-  const deleteButton = this.parentElement.querySelector(
-    `.js-delete-checklist-${this.dataChecklist.checklistId}`
-  );
-  const section = document.querySelector(".js-modal-card");
-  deleteButton.addEventListener("click", async (e) => {
-    e.preventDefault();
-    try {
-      const checklistServices = new ChecklistServices();
-      await checklistServices.delete(
-        this.dataCard.id,
-        this.dataChecklist.checklistId
-      );
-      // hacer que se renderice el modal
-      section.style.display = "none";
-      const currentBoard = new CurrentBoard(".js-content");
-      currentBoard.render();
-    } catch (e) {
-      console.log(e);
-      alert(e.message);
-    }
-  });
+Checklist.prototype.renderChecklist = function (checklist) {
+  return `
+  <li data-checklistId="${checklist.checklistId}" class="js-checklists">
+    <header class="checklist__header">  
+      <h6>${checklist.name}</h6>
+      <a class="js-delete-checklist" href="#">Delete</a>
+    </header>
+    <div class="js-container-check-items-${checklist.checklistId}"></div>
+  </li>
+  `;
 };
 
-Checklist.prototype.showFormCheckItem = function () {
-  const buttonShow = this.parentElement.querySelector(
-    `.js-show-form-${this.dataChecklist.checklistId}`
-  );
-  const form = this.parentElement.querySelector(
-    `.js-form-create-${this.dataChecklist.checklistId}`
-  );
-  buttonShow.addEventListener("click", () => {
-    buttonShow.style.display = "none";
-    form.style.display = "block";
-  });
-};
-
-Checklist.prototype.hideFromCheckItem = function () {
-  const buttonShow = this.parentElement.querySelector(
-    `.js-show-form-${this.dataChecklist.checklistId}`
-  );
-  const form = this.parentElement.querySelector(
-    `.js-form-create-${this.dataChecklist.checklistId}`
-  );
-  const closeForm = this.parentElement.querySelector(
-    `.js-close-form-${this.dataChecklist.checklistId}`
-  );
-  closeForm.addEventListener('click', () => {
-    buttonShow.style.display = 'inline-block';
-    form.style.display = 'none';
-  })
-};
-
-Checklist.prototype.addFormCheckItem = function () {
-  const form = this.parentElement.querySelector(`.js-form-create-${this.dataChecklist.checklistId}`);
-  const section = document.querySelector(".js-modal-card");
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    try {
-      const name = form.name.value;
-      const checkItemServices = new CheckItemServices()
-      await checkItemServices.create(this.dataChecklist.checklistId, name)
-      section.style.display = 'none';
-      const currentBoard = new CurrentBoard('.js-content');
-      currentBoard.render();
-    } catch (e) {
-      console.log(e);
-      alert(e.message);
-    }
+Checklist.prototype.generateCheckItems = function() {
+  const checklists = this.parentElement.querySelectorAll('.js-checklists');
+  checklists.forEach(checklist => {
+    this.generateCheckItem(checklist);
   })
 }
+
+Checklist.prototype.generateCheckItem = function(checklist) {
+  const checklistId = parseInt(checklist.dataset.checklistid);
+  const dataChecklist = this.dataCard.checklists.find(checklist => checklist.checklistId === checklistId)
+  const checkItem = new CheckItem(`.js-container-check-items-${checklistId}`, dataChecklist)
+  checkItem.render();
+}
+
+Checklist.prototype.deleteChecklist = function () {
+  const deleteButtons = this.parentElement.querySelectorAll(
+    ".js-delete-checklist"
+  );
+  deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener("click", async (e) => {
+      if (e.target === deleteButton) e.preventDefault();
+      try {
+        const checklistId = parseInt(
+          deleteButton.closest(".js-checklists").dataset.checklistid
+        );
+        const checklistServices = new ChecklistServices();
+        await checklistServices.delete(this.dataCard.id, checklistId);
+        this.dataCard.checklists = this.dataCard.checklists.filter(
+          (checklist) => checklist.checklistId !== checklistId
+        );
+        this.render();
+      } catch (e) {
+        console.log(e);
+        alert(e.message);
+      }
+    });
+  });
+};
